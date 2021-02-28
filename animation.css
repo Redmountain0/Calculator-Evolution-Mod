@@ -1,0 +1,170 @@
+@keyframes greenGlow {
+  from {
+    color: var(--baseCol);
+    text-shadow: 0 0 0.4vh var(--baseCol);
+  }
+  50% {
+    color: var(--baseCol2);
+    text-shadow: 0 0 1.2vh var(--baseCol2);
+  }
+  to {
+    color: var(--baseCol);
+    text-shadow: 0 0 0.4vh var(--baseCol);
+  }
+}
+@keyframes purpleGlow {
+  from {
+    color: #8f24d1;
+    text-shadow: 0 0 0.4vh #8f24d1;
+  }
+  50% {
+    color: #681a9c;
+    text-shadow: 0 0 1.2vh #681a9c;
+  }
+  to {
+    color: #8f24d1;
+    text-shadow: 0 0 0.4vh #8f24d1;
+  }
+}
+@keyframes whiteGlow {
+  from {
+    color: #fff;
+    text-shadow: 0 0 0.4vh #fff;
+  }
+  50% {
+    color: #eee;
+    text-shadow: 0 0 1.2vh #eee;
+  }
+  to {
+    color: #fff;
+    text-shadow: 0 0 0.4vh #fff;
+  }
+}
+@keyframes cyanGlow {
+  from {
+    color: #24d194;
+    text-shadow: 0 0 0.4vh #24d194;
+  }
+  50% {
+    color: #1a9c6a;
+    text-shadow: 0 0 1.2vh #1a9c6a;
+  }
+  to {
+    color: #24d194;
+    text-shadow: 0 0 0.4vh #24d194;
+  }
+}
+@keyframes t3Animation {
+  from {
+    color: #fff;
+    text-shadow: 0 0 0.8vh #222;
+  }
+  50% {
+    color: #eee;
+    text-shadow: 0 0 2vh #000;
+  }
+  to {
+    color: #fff;
+    text-shadow: 0 0 0.8vh #222;
+  }
+}
+@keyframes t4Animation {
+  from {
+    color: #ccc;
+    text-shadow: 0 0 2vh #fff;
+  }
+  50% {
+    color: #888;
+    text-shadow: 0 0 0.8vh #fff;
+  }
+  to {
+    color: #ccc;
+    text-shadow: 0 0 2vh #fff;
+  }
+}
+@keyframes quarkGlow {
+  from {
+    color: #fff; text-shadow: 0 0 0.4vh #d442f5, 0 0 0.4vh #d442f5, 0 0 0.4vh #d442f5;
+  }
+  50% {
+    color: #eee; text-shadow: 0 0 0.5vh #d442f5, 0 0 0.5vh #d442f5, 0 0 0.5vh #d442f5;
+  }
+  to {
+    color: #fff; text-shadow: 0 0 0.4vh #d442f5, 0 0 0.4vh #d442f5, 0 0 0.4vh #d442f5;
+  }
+}
+@keyframes greenBoxShade {
+  from {
+    box-shadow: 0 0 0.5vh 0.25vh #239423 inset;
+  }
+  50% {
+    box-shadow: 0 0 2vh 1vh #3cc93c inset;
+  }
+  to {
+    box-shadow: 0 0 0.5vh 0.25vh #239423 inset;
+  }
+}
+@keyframes rebootButtonGlow {
+  from {
+    color: var(--baseCol); text-shadow: 0 0 0.4vh var(--baseCol);
+    background-color: var(--baseCol2);
+    border: 0.4vh solid var(--baseCol);
+    box-shadow: 0 0 0 0 var(--baseCol2) inset;
+  }
+  45% {
+    color: var(--baseCol); text-shadow: 0 0 3vh var(--baseCol);
+    background-color: var(--baseCol2);
+    border: 0.4vh solid var(--baseCol);
+    box-shadow: 0 0 0.5vh 3vh var(--baseCol) inset;
+  }
+  50% {
+    color: var(--baseCol2); text-shadow: 0 0 1.2vh var(--baseCol2);
+    background-color: var(--baseCol);
+    border: 0.4vh solid var(--baseCol2);
+    box-shadow: 0 0 0 0 var(--baseCol) inset;
+  }
+  95% {
+    color: var(--baseCol2); text-shadow: 0 0 3vh var(--baseCol2);
+    background-color: var(--baseCol);
+    border: 0.4vh solid var(--baseCol2);
+    box-shadow: 0 0 0.5vh 3vh var(--baseCol2) inset;
+  }
+  to {
+    color: var(--baseCol); text-shadow: 0 0 0.4vh var(--baseCol);
+    background-color: var(--baseCol2);
+    border: 0.4vh solid var(--baseCol);
+    box-shadow: 0 0 0 0 var(--baseCol2) inset;
+  }
+}
+@keyframes quantumButtonOverlapMove {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: 20vw;
+  }
+}
+@keyframes singularityButtonOverlapMove {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: 16vw;
+  }
+}
+@keyframes singularityButtonOverlap2Move {
+  from {
+    background-position-y: 0;
+  }
+  to {
+    background-position-y: 5.8vh;
+  }
+}
+@keyframes hueRotate {
+  from {
+    filter: hue-rotate(0deg);
+  }
+  to {
+    filter: hue-rotate(360deg);
+  }
+}

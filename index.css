@@ -1,0 +1,947 @@
+* {
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto Mono', monospace;
+  user-select: none;
+  overflow: visible;
+}
+body {
+  --baseCol: #49d124;
+  --baseCol2: #369c1a;
+  --baseCol3: rgba(54, 156, 26, 0.5);
+  --whiteglow: whiteGlow ease 5s infinite;
+  --color: #fff;
+  --shadow: 0 0 0.4vh #fff;
+}
+
+#warpAll {
+  width: 100vw; height: 100vh;
+  background-color: #000;
+  overflow: hidden;
+}
+#numberArea {
+  margin: 4vh 0 0 2.5vw;
+  height: 6vh;
+  font-size: 4vh;
+  animation: greenGlow ease 5s infinite;
+  white-space: nowrap;
+  direction: ltr;
+}
+#moneyArea {
+  margin: 0 0 0 2.5vw;
+  font-size: 2vh;
+  animation: greenGlow ease 5s infinite;
+}
+#numberDigits {
+  display: inline-block;
+  max-width: 55vw; height: 4.4vh;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+#memoryDigit {
+  display: inline-block;
+  max-width: 30vw; height: 4.15vh;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  filter: grayscale(1);
+}
+#mainNav {
+  height: 5vh;
+  margin: 2vh 0 0 5vw;
+  font-size: 2.7vh;
+}
+.tabNav {
+  display: inline-block;
+  padding: 0.2vh 0.2vw;
+  border-radius: 0.3vh;
+  transition: 0.3s;
+}
+.tabNav:hover {
+  filter: brightness(1.3);
+}
+.tabNav:active {
+  filter: brightness(1.6);
+  transform: scale(1.1);
+  transition: 0s;
+}
+.t1Nav {
+  border: 0.35vh solid var(--baseCol);
+  background-color: var(--baseCol3);
+  cursor: pointer;
+  animation: greenGlow ease 5s infinite;
+}
+.t2Nav {
+  border: 0.35vh solid #24d18c;
+  background-color: rgba(26, 156, 104, 0.5);
+  cursor: pointer;
+  animation: cyanGlow ease 5s infinite;
+}
+.t3Nav {
+  border: 0.35vh solid #d442f5;
+  background-color: rgba(212, 66, 245, 0.5);
+  cursor: pointer;
+  animation: t3Animation ease 3s infinite;
+}
+.t3Nav.available {
+  background-color: rgba(153, 31, 180, 0.5);
+  transition: all 0.3s;
+}
+.t3Nav.available > span {
+  background: linear-gradient(
+    90deg,
+    #9000ff 0%,
+    #00f 25%,
+    #00d5ff 37.5%,
+    #0f0 50%,
+    #5eff00 62.5%,
+    #f00 75%,
+    #ffea00 100%
+  );
+  text-shadow: 0 0 1vh #aaa;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.3s;
+}
+.t4Nav {
+  border: 0.35vh solid #19306b;
+  background-color: rgba(6, 17, 46, 0.5);
+  cursor: pointer;
+  animation: t4Animation ease 3s infinite;
+}
+.absoluteElement {
+  position: absolute;
+}
+
+#commandArea {
+  margin-left: 1.5vw;
+  position: absolute; bottom: 3vh;
+  width: 98.5vw; height: 1.9vh;
+  pointer-events: none;
+}
+.commandTxt {
+  position: absolute;
+  opacity: 0.7;
+  font-size: 1.9vh;
+  animation: greenGlow ease 5s infinite;
+}
+
+#programStatusArea {
+  position: absolute;
+  top: 0.4vh; left: 0.2vw;
+}
+#programStatusArea > span {
+  display: block; float: left;
+  margin-right: 0.3vh;
+}
+#programStatusArea > span:not(:first-child) {
+  width: 1.3vh; height: 1.3vh;
+  border: 0.2vh solid var(--baseCol3);
+  background-color: rgba(0, 0, 0, 0);
+  transition: background-color cubic-bezier(.19,1.82,.96,-0.89) 0.4s, box-shadow cubic-bezier(.19,1.82,.96,-0.89) 0.4s;
+}
+#programStatusArea > span:not(:first-child).activated {
+  background-color: var(--baseCol3);
+  box-shadow: 0 0 0.6vh var(--baseCol);
+}
+
+#infoArea {
+  position: absolute;
+  padding: 0.5vh 0;
+  top: 0; right: 0;
+  min-width: 24vh;
+  font-size: 1.6vh;
+  background-color: rgba(255, 255, 255, 0.6); box-shadow: 0 0 3vh rgba(255, 255, 255, 0.6);
+  pointer-events: none;
+}
+#infoArea > div {
+  padding: 0.1vh 0.5vw;
+}
+#basicInfo {
+  filter: brightness(0.6);
+  animation: greenGlow ease 5s infinite;
+}
+#overclockInfo {
+  animation: purpleGlow ease 5s infinite;
+}
+#singularityInfo {
+  color: #0a205c;
+  text-shadow: 0 0 0.8vh #fff, -0.2vh 0 0.3vh #63b88d, 0.2vh 0 0.3vh #f54c8f;
+}
+
+.tab:nth-of-type(1) {
+  display: flex;
+  height: 75vh;
+}
+.moduleContainer {
+  display: inline-block;
+  height: 100%;
+}
+.moduleContainer:nth-of-type(2) {
+  margin-left: 2vh;
+  width: 50vw;
+}
+.sectionTxt {
+  margin: 1.4vh 0 0 3.5vw;
+  font-size: 2.5vh; color: var(--baseCol2); text-shadow: 0 0 0.4vh var(--baseCol2);
+}
+.sectionTxt:nth-of-type(1) {
+  width: 12vw;
+}
+#singularityGridWarp > .sectionTxt {
+  margin-left: 0;
+}
+#programs {
+  margin: 0 0 0 3.5vw;
+}
+.program {
+  width: 30vw;
+  margin: 1vh 0 0 0; padding: 0.3vh 0.3vw;
+  font-size: 1.7vh;
+  border: 0.1vh solid #d12424;
+  background-color: rgba(56, 9, 9, 0.5);
+  filter: blur(0.08vh);
+  cursor: pointer;
+  animation: greenGlow ease 5s infinite;
+  transition: all 0.3s;
+}
+.program:hover {
+  border: 0.1vh solid #9c1a1a;
+  background-color: rgba(56, 9, 9, 0.8);
+  filter: blur(0);
+}
+.program:active {
+  border: 0.1vh solid var(--baseCol);
+  background-color: var(--baseCol3);
+  filter: blur(0);
+  transition: all 0s;
+}
+.program.active {
+  border: 0.1vh solid var(--baseCol);
+  background-color: var(--baseCol3);
+  filter: blur(0);
+  transition: all 0.3s;
+}
+.program.active:hover {
+  border: 0.1vh solid var(--baseCol);
+  background-color: rgba(54, 156, 26, 0.8);
+  filter: blur(0.1vh);
+}
+.program.permanent {
+  animation: purpleGlow ease 5s infinite;
+}
+.program.permanent:hover {
+  border: 0.1vh solid #9c1a1a;
+  background-color: rgba(56, 9, 9, 0.8);
+}
+.program.permanent:active {
+  border: 0.1vh solid #9224d1;
+  background-color: rgba(106, 26, 156, 0.5);
+}
+.program.permanent.active {
+  border: 0.1vh solid #9224d1;
+  background-color: rgba(106, 26, 156, 0.5);
+}
+#singularityGridInnerWarp {
+  margin: 0 auto;
+  width: 95%; height: calc(100% - 5vh);
+}
+#singularityGridInnerWarp > span {
+  display: block; float: left;
+  background: rgba(54, 156, 26, 0.2);
+}
+/* container 1 */
+#singularityGridOutWarp {
+  margin-right: calc(0.8% * 2/3);
+  height: 65%; width: calc(99% * 2/3);
+  overflow: hidden;
+}
+#singularityGridOutInnerWarp {
+  width: calc(var(--s) * 1.03); height: var(--s);
+  margin: 0 auto;
+}
+.singularityGridBlock {
+  --col: #0c161f;
+  position: relative;
+  display: block; float: left;
+  width: calc(var(--s)*0.195); height: calc(var(--s)*0.195);
+  border: calc(var(--s)*.0025) solid #1a619c;
+  background-color: #0c161f;
+  box-shadow: 0 0 0.6vh #1a619c;
+  transition: background-color 0.2s;
+  cursor: pointer;
+  z-index: 2;
+}
+.singularityGridBlock.disabled {
+  border-color: #f00;
+  background-color: #111;
+  z-index: 1;
+}
+.singularityGridBlock:not(.disabled):hover {
+  background-color: #1a619c;
+}
+.singularityGridBlock:not(.disabled):active {
+  background-color: #193247;
+  transition: background-color 0s;
+}
+.machineArrow {
+  --arrowState: 1; --cCol: #3297c9;
+  position: absolute; top: calc(var(--s) * 0.07); left: calc(var(--s) * 0.07);
+  padding: calc(var(--s) * 0.02);
+  border: solid var(--cCol);
+  filter: brightness(2.6) drop-shadow(0 0 calc(var(--s) * 0.05) var(--cCol));
+  border-width: 0 calc(var(--s) * 0.02) calc(var(--s) * 0.02) 0;
+  display: inline-block;
+  transform: rotate(calc(45deg + 90deg * var(--arrowState))) scale(0.5);
+}
+.machineTier {
+  width: calc(var(--s)*0.195);
+  position: absolute; top: calc(var(--s) * 0.03);
+  text-align: center;
+  font-size: calc(var(--s) * 0.1);
+  color: #fff; text-shadow: 0 0 0.4vh #fff;
+  opacity: 0.3;
+}
+.machineName {
+  width: calc(var(--s)*0.195);
+  position: absolute; top: calc(var(--s) * 0.14);
+  text-align: center;
+  font-size: calc(var(--s) * 0.027);
+  color: #1d8a13; text-shadow: 0 0 0.4vh #1d8a13;
+}
+.machineValue {
+  width: calc(var(--s)*0.19);
+  position: absolute;
+  text-align: right;
+  font-size: calc(var(--s) * 0.04);
+  color: #fff;
+}
+/* container 2 */
+#singularityEffectsWarp {
+  height: 65%; width: calc(99% * 1/3);
+}
+#singularityEffects {
+  padding: 1vh;
+  font-size: 1.5vh;
+  animation: greenGlow ease 5s infinite;
+  line-height: 200%;
+}
+/* container 3 */ 
+#singularityMachines {
+  --h: 23.5vh;
+  margin-top: 0.6vh;
+  width: calc(99% - 1vw + 0.8% * 2/3); height: var(--h);
+  padding: 0.5vh 0.5vw;
+}
+.singularityGridMachines {
+  display: block; float: left;
+  --bh: calc(var(--h) / 4 - 0.2vh);
+  --col: #097505;
+  width: 30%; height: calc(var(--bh) * 0.9);
+  margin: calc(var(--bh) * 0.05) 1.4%;
+  background-color: var(--col);
+  box-shadow: 0 0 0.6vh #fff;
+  border: 0.1vh solid #fff;
+  transition: border-color 1s, filter 0.4s, transform 0.4s;
+}
+.singularityGridMachines.selected, .singularityGridMachines:not(.selected):hover {
+  box-shadow: 0 0 0.6vh #fff, 0 0 0.8vh #fff inset;
+  transform: scale(1.07);
+  filter: brightness(1.4);
+}
+.singularityGridMachines:not(.selected):active {
+  box-shadow: 0 0 0.6vh #fff, 0 0 1.4vh #fff inset;
+  transform: scale(1);
+  filter: brightness(0.8);
+  transition: border-color 0s, filter 0s, transform 0s;
+}
+.singularityGridMachineTxt {
+  padding-left: 1vh;
+  font-size: 2vh;
+  color: #fff;
+  text-shadow: var(--whiteglow);
+}
+
+
+.tab:nth-of-type(2) {
+  margin: 5vh 0 0 10vw;
+}
+.shopBox {
+  display: block; float: left;
+  margin-right: 2.5vw;
+  width: 25vw; height: 60vh;
+  border-radius: 2vh; border: 0.3vh solid #239423;
+  background-color: rgba(23, 99, 23, 0.8);
+  animation: greenBoxShade ease 13s infinite;
+}
+.sectionTxtShop {
+  margin: 2vh 0 0 0;
+  width: 100%;
+  font-size: 2.5vh; color: #0a360a; text-shadow: 0 0 1.2vh #0a360a; text-align: center;
+  background-color: #239423;
+}
+.shopItem {
+  margin: 2.2vh 2vw;
+  height: 7.8vh;
+  color: #0c3b0c;
+  border-radius: 1vh; border: 0.2vh solid #135e13;
+  background-color: rgba(35, 148, 35, 0.7);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out -0.1s;
+}
+.shopItem:hover {
+  color: #59d459; text-shadow: 0 0 0.3vh #59d459;
+}
+.shopItem:active {
+  color: #fff; text-shadow: 0 0 0.6vh #fff;
+  transition: all 0s;
+}
+.shopItem > .itemName {
+  margin-top: 0.15vh;
+  height: 3.5vh;
+  font-size: 2.8vh; text-align: center;
+}
+.shopItem > .itemCost {
+  height: 1.8vh;
+  font-size: 1.8vh; text-align: center;
+}
+.shopItem > .itemDesc {
+  margin-top: 0.2vh;
+  height: 1.2vh;
+  font-size: 1.2vh; text-align: center;
+}
+.shopItem.bought {
+  color: #59d459; text-shadow: 0 0 0.6vh #59d459;
+  transition: all 1s;
+}
+
+.tab:nth-of-type(3) {
+  text-align: center;
+}
+#rebootButton {
+  margin: 0 0 0 45vw; padding: 1vh 0 0 0;
+  width: 10vw; height: 5vh;
+  font-size: 3vh;
+  border-radius: 0.5vh;
+  cursor: pointer;
+  transition: all 0.4s;
+  animation: rebootButtonGlow linear 8s infinite;
+}
+#rebootButton:not(.disabled):hover {
+  transform: scale(1.1);
+  filter: brightness(0.9) hue-rotate(-110deg);
+}
+#rebootButton:not(.disabled):active {
+  transform: scale(1);
+  filter: brightness(2) hue-rotate(-110deg);
+  transition: all 0s;
+}
+#rebootButton.disabled {
+  cursor: auto;
+  filter: grayscale(1);
+  color: var(--baseCol); text-shadow: 0 0 0.4vh var(--baseCol);
+  background-color: #2e8018;
+  border: 0.4vh solid var(--baseCol);
+  box-shadow: 0 0 0 0 #2e8018 inset;
+  transition: all 1s;
+  animation: none;
+}
+#rebootDesc {
+  color: var(--baseCol); font-size: 1.8vh;
+  height: 6vh;
+}
+#rpDisplay {
+  margin-top: 3vh;
+  font-size: 3.6vh;
+  animation: greenGlow ease 2.5s infinite;
+}
+.research {
+  display: inline-block;
+  margin: 2vh 0 0 0; padding: 0 0 0 1vw;
+  width: 28vw; height: 15vh;
+  text-align: left;
+  border-radius: 2vh; border: 0.4vh solid #469e3a;
+  background: linear-gradient(#469e3a, #1f7816);
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s;
+}
+.research:hover {
+  filter: brightness(1.05);
+  transform: scale(1.02);
+}
+.research:active {
+  filter: brightness(1.2);
+  transform: scale(1);
+  transition: all 0s;
+}
+.researchName {
+  width: 28vw; height: 5vh;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 4vh; color: #89d47b; text-shadow: 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605;
+}
+.researchName > span {
+  font-size: 1.6vh;
+}
+.researchProgress {
+  width: 26vw; height: 5vh;
+  position: relative;
+  border: 0.4vh solid #469e3a;
+  background: linear-gradient(#173313, #12450c);
+}
+.researchLevel {
+  margin: 0.5vh 0 0 0;
+  position: absolute;
+  font-size: 4vh;
+  z-index: 5;
+  animation: var(--whiteglow);
+  color: var(--color);
+  text-shadow: var(--shadow);
+}
+.researchProgressDisplay {
+  width: 26vw; height: 2vh;
+  text-align: right;
+  position: absolute;
+  font-size: 2vh;
+  z-index: 5;
+  animation: var(--whiteglow);
+  color: var(--color);
+  text-shadow: var(--shadow);
+  filter: brightness(0.7);
+}
+.innerBar {
+  width: 0; height: 5vh;
+  position: absolute;
+  background-color: #dba7a7;
+}
+.shadowBar {
+  width: 26vw ; height: 5vh;
+  position: absolute;
+  box-shadow: 0 0 0.5vh 0.25vh rgba(128, 128, 128, 0.8) inset;
+}
+.researchCost {
+  font-size: 1.7vh; color: #89d47b; text-shadow: 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605;
+}
+.researchDesc {
+  font-size: 1.2vh; color: #89d47b; text-shadow: 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605, 0 0 0.3vh #0d3605;
+}
+
+.tab:nth-of-type(4) {
+  text-align: center;
+}
+#achPageNav {
+  margin: 2vh auto 0 auto;
+  width: 30vw; height: 4vh;
+}
+#achWarp {
+  margin: 0 auto;
+  border-spacing: 0.5vh;
+}
+#achWarp > tbody > tr > td {
+  width: 9vh; height: 9vh;
+  color: #fff; text-shadow: 0 0 1vh #fff; font-size: 1.4vh;
+  background-color: #080;
+  transition: background-color 0.3s;
+}
+#achWarp > tbody > tr > td:hover {
+  background-color: #050;
+}
+#achDesc {
+  position: absolute;
+  padding: 0.3vh 0.5vw;
+  font-size: 1.8vh;
+  text-align: center;
+  background-color: rgba(20, 20, 20, 0.5);
+  border: 0.3vh solid #fff;
+  box-shadow: 0 0 0.3vh #fff inset, 0 0 0.5vh #fff;
+  backdrop-filter: blur(0.5vh) brightness(1.4);
+  opacity: 0;
+  animation: var(--whiteglow);
+  border-radius: 0.6vh;
+  pointer-events: none;
+  transition: opacity 0.3s, top 0.2s, left 0.2s;
+}
+
+.tab:nth-of-type(5) {
+  text-align: center;
+}
+.optionBtn {
+  margin: 1vh 0 0 0; padding: 0.25vh 1vw;
+  display: inline-block;
+  border: 0.35vh solid var(--baseCol); border-radius: 0.5vh;
+  background-color: var(--baseCol3);
+  font-size: 3vh;
+  cursor: pointer;
+  transition: all ease 0.3s;
+  animation: greenGlow ease 5s infinite;
+}
+.optionBtn.disabled {
+  filter: hue-rotate(-110deg) brightness(1);
+}
+.optionBtn:hover {
+  transform: scale(1.1);
+  transition: all 0.3s;
+}
+.optionBtn:not(.disabled):hover {
+  filter: hue-rotate(0deg) brightness(1);
+}
+.optionBtn.disabled:hover {
+  filter: hue-rotate(-110deg) brightness(1);
+}
+.optionBtn:active {
+  transform: scale(1);
+  transition: all 0s;
+}
+.optionBtn:not(.disabled):active {
+  filter: hue-rotate(-110deg) brightness(2);
+}
+.optionBtn.disabled:active {
+  filter: hue-rotate(0deg) brightness(2);
+}
+
+.tab:nth-of-type(6) {
+  text-align: center;
+}
+#quantumButton {
+  margin: 0 auto;
+  width: 20vw; height: 5.8vh;
+  font-size: 2vh;
+  border-radius: 0.5vh;
+  cursor: pointer;
+  color: #fff; text-shadow: 0 0 0.4vh #000, 0 0 0.4vh #000, 0 0 0.4vh #000;
+  border: 0.4vh solid #c954e3;
+  background: linear-gradient(
+    90deg,
+    #000 0%,
+    #9000ff 12.5%,
+    #00f 25%,
+    #00d5ff 37.5%,
+    #0f0 50%,
+    #5eff00 62.5%,
+    #f00 75%,
+    #ffea00 87.5%,
+    #000 100%
+  );
+  transition: all 0.4s;
+}
+#quantumButtonOverlap {
+  position: absolute;
+  padding-top: 0.8vh;
+  width: inherit; height: 5vh;
+  background: linear-gradient(
+    90deg,
+    #000 0%,
+    #000 10%, rgba(0,0,0,0) 10%, rgba(0,0,0,0) 11%, #000 10%,
+    #000 26%, rgba(0,0,0,0) 26%, rgba(0,0,0,0) 27.5%, #000 27.5%,
+    #000 31%, rgba(0,0,0,0) 31%, rgba(0,0,0,0) 32%, #000 32%,
+    #000 47%, rgba(0,0,0,0) 47%, rgba(0,0,0,0) 49%, #000 49%,
+    #000 59%, rgba(0,0,0,0) 59%, rgba(0,0,0,0) 60%, #000 60%,
+    #000 81%, rgba(0,0,0,0) 81%, rgba(0,0,0,0) 82%, #000 82%,
+    #000 100%
+  );
+  animation: quantumButtonOverlapMove linear 3s infinite;
+}
+#quantumButton:not(.disabled):hover {
+  transform: scale(1.1);
+  filter: brightness(0.9);
+}
+#quantumButton:not(.disabled):active {
+  transform: scale(1);
+  filter: brightness(2);
+  transition: all 0s;
+}
+#quantumButton.disabled {
+  cursor: auto;
+  filter: grayscale(1);
+  color: #fff; text-shadow: 0 0 0.4vh #666;
+  background-color: rgb(166,52,191);
+  border: 0.4vh solid #c954e3;
+  transition: all 1s;
+  animation: none;
+}
+#quantumLabCost {
+  font-size: 1.2vh;
+}
+#quantumDesc {
+  font-size: 1.8vh;
+  color: #d442f5;
+}
+#qubitDisplay {
+  margin-top: 1vh;
+  font-size: 3.6vh;
+  animation: quarkGlow ease 10s infinite;
+}
+#quantumUpgrades {
+  --s: min(50vw, 50vh); --n: 7; --s2: calc(var(--s) / var(--n) * 8 / 10 - 0.4vh); --m: calc(var(--s) / var(--n) / 10);
+  margin: 1vh auto;
+  width: var(--s); height: var(--s);
+}
+.quantumUpgrade {
+  --col: #000; --col2: #000;
+  margin-right: var(--m);
+  display: inline-block;
+  margin-bottom: var(--m);
+  width: var(--s2); height: var(--s2);
+  border: 0.4vh solid var(--col); border-radius: var(--s2);
+  background-color: #000;
+  cursor: pointer;
+  transition: background-color 1s, transform 1.2s, opacity 0.4s;
+  animation: quarkGlow ease 7.3s infinite;
+}
+.quantumUpgrade:not(.bought):hover {
+  background-color: var(--col2);
+  transform: scale(1.1);
+  transition: background-color 0.25s, transform 0.2s;
+}
+.quantumUpgrade.bought {
+  background-color: var(--col);
+  box-shadow: 0 0 0.7vh #222 inset;
+}
+.quantumUpgrade.deactivated {
+  opacity: 0.3;
+}
+#quantumRespec {
+  --tempOp: 0; --tempDis: none;
+  margin: 0 auto;
+  padding-top: 0.2vh;
+  width: 10vh; height: 1.8vh;
+  font-size: 1.2vh;
+  color: #000; text-shadow: 0 0 0.4vh #666, 0 0 0.4vh #666, 0 0 0.4vh #666;
+  background-color: #a62bc2;
+  border: 0.4vh solid #b24bc9; border-radius: 1vh;
+  box-shadow: 0 0 1vh #a62bc2;
+  cursor: pointer;
+  transition: all 0.3s;
+  overflow: hidden;
+}
+#quantumRespec:hover {
+  --tempOp: 1; --tempDis: inline;
+  width: 24vh;
+  background-color: #ddd;
+  border-color: #666;
+  box-shadow: 0 0 1vh #ddd;
+  transform: scale(1.1);
+}
+#quantumRespec:active {
+  background-color: #ddd;
+  border-color: #666;
+  box-shadow: 0 0 1vh #ddd;
+  transform: scale(1);
+  transition: all 0s;
+}
+#quantumRestart {
+  --tempOp: 0; --tempDis: none;
+  margin: 1vh auto;
+  padding-top: 0.2vh;
+  width: 10vh; height: 1.8vh;
+  font-size: 1.2vh;
+  color: #000; text-shadow: 0 0 0.4vh #666, 0 0 0.4vh #666, 0 0 0.4vh #666;
+  background-color: #a62bc2;
+  border: 0.4vh solid #b24bc9; border-radius: 1vh;
+  box-shadow: 0 0 1vh #a62bc2;
+  cursor: pointer;
+  transition: all 0.3s;
+  overflow: hidden;
+}
+#quantumRestart:hover {
+  --tempOp: 1; --tempDis: inline;
+  width: 24vh;
+  background-color: #ddd;
+  border-color: #666;
+  box-shadow: 0 0 1vh #ddd;
+  transform: scale(1.1);
+}
+#quantumRestart:active {
+  background-color: #ddd;
+  border-color: #666;
+  box-shadow: 0 0 1vh #ddd;
+  transform: scale(1);
+  transition: all 0s;
+}
+#quantumUpgradeDesc {
+  position: absolute;
+  padding: 1vh 1vw;
+  color: #fff; text-shadow: 0 0 0.3vh #d442f5, 0 0 0.3vh #d442f5; text-align: left; font-size: 1.7vh;
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 0.4vh solid #fff; border-radius: 0.3vh;
+  box-shadow: 0 0 0.5vh #fff;
+  opacity: 0;
+  backdrop-filter: blur(0.7vh) brightness(1.7) drop-shadow(0 0 1vh #d442f5);
+  transform: scaleX(0);
+  transition: all 0.3s, transform 0.2s ease 0.1s;
+  pointer-events: none;
+}
+
+.tab:nth-of-type(7) {
+  text-align: center;
+}
+
+.tab:nth-of-type(8) {
+  text-align: center;
+}
+#singularityButton {
+  margin: 0 auto;
+  width: 16vw; height: 5.8vh;
+  font-size: 2.4vh;
+  border-radius: 1.2vh;
+  cursor: pointer;
+  color: #aaa; text-shadow: 0 0 0.4vh #fff;
+  border: 0.4vh solid #122b6e;
+  background-color: #fff;
+  transition: all 0.4s;
+}
+#singularityButtonOverlap {
+  width: inherit; height: 5.8vh;
+  border-radius: 0.9vh;
+  background: linear-gradient(
+    90deg,
+    #000 0%,
+    #000 10%, rgba(0,0,0,0) 10%, rgba(0,0,0,0) 12%, #000 12%,
+    #000 100%
+  );
+  animation: singularityButtonOverlapMove linear 0.67s infinite;
+}
+#singularityButtonOverlap2 {
+  padding-top: 1.2vh;
+  width: inherit; height: 4.6vh;
+  border-radius: 0.9vh;
+  background: linear-gradient(
+    180deg,
+    #000 0%,
+    #000 10%, rgba(0,0,0,0) 10%, rgba(0,0,0,0) 20%, #000 20%,
+    #000 100%
+  );
+  box-shadow: 0 0 1vh #7b95db inset;
+  animation: singularityButtonOverlap2Move linear 0.37s infinite;
+  transition: box-shadow 0.3s;
+}
+#singularityButton:not(.disabled):hover {
+  transform: scale(1.1);
+  filter: brightness(0.9);
+}
+#singularityButton:not(.disabled) #singularityButtonOverlap2:hover {
+  box-shadow: 0 0 2vh #7b95db inset;
+}
+#singularityButton:not(.disabled):active {
+  transform: scale(1);
+  filter: brightness(2);
+  transition: all 0s;
+}
+#singularityButton.disabled {
+  cursor: auto;
+  filter: grayscale(1);
+  color: #fff; text-shadow: 0 0 0.4vh #666;
+  background-color: rgb(166,52,191);
+  border: 0.4vh solid #c954e3;
+  transition: all 1s;
+  animation: none;
+}
+#singularityDesc {
+  font-weight: bold;
+  font-size: 1.8vh;
+  color: #0a205c;
+  text-shadow: 0 0 0.8vh #fff, -0.2vh 0 0.3vh #63b88d, 0.2vh 0 0.3vh #f54c8f;
+}
+#wormholeChallengeWarp {
+  position: absolute;
+  top: 37vh; left: 2vw;
+  width: 96vw; height: 55vh;
+}
+#wormholeChallengeHeader {
+  padding-top: 2vh;
+  height: 15%;
+  color: #0c161f; text-shadow: 0 0 0.4vh #fff, 0 0 0.1vh #fff;
+  font-weight: bold;
+}
+#wormholeChallengeInnerWarp {
+  height: 80%;
+}
+#gridReq {
+  font-size: 2vh; 
+}
+#milestoneReq {
+  font-size: 1.6vh; 
+}
+#challengeDesc {
+  font-size: 1.4vh;
+}
+.wormholeChallenge {
+  --col: rgb(39, 204, 141); --progress: 10%;
+  position: relative;
+  display: block; float: left;
+  margin: 0.5vh calc(1% - 0.4vh);
+  width: 23%; height: 40%;
+  font-size: 1.7vh;
+  border: 0.4vh solid #fff; border-radius: 2vh;
+  background: linear-gradient(140deg, #040404 0%, #040404 calc(85% - var(--progress)), var(--col) 100%);
+  box-shadow: -0.15vw -0.3vh 0.8vh #444, 0.3vw 0.6vh 0.8vh var(--col), 0.3vw 0.6vh 1.2vh var(--col), 0.3vw 0.6vh 1.6vh var(--col);
+  filter: brightness(1.4);
+  overflow: hidden;
+  cursor: pointer;
+  transition: filter 0.4s, transform cubic-bezier(0.76, 0, 0.24, 1) 0.3s, box-shadow cubic-bezier(0.76, 0, 0.24, 1) 0.3s;
+}
+.wormholeChallenge:hover {
+  transform: translate(-0.15vw, -0.3vh);
+  box-shadow: 0 0 0.8vh #444, 0.45vw 0.9vh 0.8vh var(--col), 0.45vw 0.9vh 1.2vh var(--col), 0.45vw 0.9vh 1.6vh var(--col);
+  filter: brightness(1.8);
+}
+.wormholeChallenge:active {
+  transition: all 0s;
+  transform: translate(0.3vw, 0.6vh);
+  box-shadow: 0vw -0vh 0.8vh #444, 0 0 0.8vh var(--col), 0 0 1.2vh var(--col), 0 0 1.6vh var(--col);
+  filter: brightness(2);
+}
+.wormholeChallengeName {
+  margin-top: 0.4vh;
+  color: var(--col); text-shadow: 0 0 0.7vh var(--col);
+  font-size: 2.2vh;
+  filter: brightness(6);
+}
+.wormholeChallengeEffect {
+  color: var(--col);
+  font-size: 1.7vh;
+  font-weight: bold;
+  filter: brightness(3) contrast(400%);
+}
+.wormholeChallengeGoal {
+  position: absolute;
+  width: 100%;
+  top: 14vh;
+  color: var(--col); text-shadow: 0 0 0.6vh var(--col);
+  font-size: 1.9vh;
+  filter: brightness(5);
+}
+#exitChallenge {
+  width: 16vh;
+  margin: 0 auto; padding: 0.2vw 0.15vh;
+  font-size: 1.2vh; color: #fff; text-shadow: 0 0 0.4vh #fff;
+  border: 0.2vh solid #fff;
+  background-color: #0c161f;
+  cursor: pointer;
+  border-radius: 1vh;
+  transition: transform 0.2s, box-shadow 0.3s;
+}
+#exitChallenge:hover {
+  transform: scale(1.07);
+  box-shadow: 0 0 0.5vh #fff;
+}
+#exitChallenge:active {
+  transform: scale(1);
+  transition: all 0s;
+}
+
+#debugInfoArea {
+  position: absolute;
+  pointer-events: none;
+  bottom: 1vh; left: 0.5vw;
+  opacity: 0.4;
+  transition: opacity 0.4s;
+  animation: greenGlow ease 5s infinite;
+}
+#debugInfoArea:hover {
+  opacity: 1;
+}
+
+.normalText {
+  color: var(--baseCol); font-size: 1.8vh;
+}
