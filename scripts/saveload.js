@@ -60,7 +60,7 @@ tempGame = {
 };
 game = {};
 tempGameSlot = {main: tempGame, simulation: tempGame, now: 0 /* 0: main; 1: simulation */, b: 2}
-
+GameSlot = tempGameSlot
 //            vvv    commandAppear=1
 function save(c=1) {
   if ((new Date().getTime())-game.lastRestoreSaved >= 1000*3600) {
@@ -72,6 +72,7 @@ function save(c=1) {
   if (c) commandAppend('save', 70);
 }
 function load(c=1) {
+  basicInits();
   // type fix
   // Number(string) -> Deciamal
   for (const i in tempGame) {
@@ -127,6 +128,10 @@ function load(c=1) {
     game.quantumUpgradeBought = [];
     dokeepMilestone();
     game.b++;
+  }
+
+  if (game.b == 1) {
+
   }
 
   // offline progress delete
