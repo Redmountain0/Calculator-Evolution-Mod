@@ -9,7 +9,7 @@
       "Each Quantum Lab Boosts CPU by x27 (x${dNotation(D(27).pow(game.quantumLab), 4, 0)})",
       "Each Grey digit boosts CPU by x30 (x${dNotation(D.max(1, D(30).pow(D.max(0, calcMaxDigit().sub(calcMaxDigit().lt(2000)?game.digits:0)))), 4, 0)})<br><b style=\"opacity: 0.6\">If max base is bigger than 2000, this bonus will based on max Digit</b>",
       "RP boosts CPU (x${dNotation(game.researchPoint.add(1).pow(0.25), 4, 1)})<br>And sqrt Quantum Lab RP req",
-      "SP boosts CPU (x${dNotation(D(10).pow(game.singularityPower.pow(0.5)), 2, 1)})"
+      "SP boosts CPU (x${dNotation(Base7Eff(), 1, 0)})<br><b style=\"opacity: 0.6\">Softcap at 1e30000</b>"
     ],
     // 2: Research
     [
@@ -19,7 +19,7 @@
       "Boost Research speed based on Time spent on this quantum and RP (x${dNotation(D(2).pow(D(game.tLast-game.quantumTime).pow(0.2)).pow(D.min(10, D.max(1, game.researchPoint.log(10).div(20)))), 4, 2)})",
       "Remove money requirement from research",
       "Research levels boosts RP gain (x${dNotation(game.researchLevel.reduce((a, b) => a.mul(b**2+1), D(1)).pow(3), 4, 1)})<br>And sqrt Quantum Lab Money req",
-      "Multiply research upgrade effect by x4 (x${!game.quantumUpgradeBought.includes('27') ? dNotation(calcPerResearchSpeedBase(), 4, 0) : dNotation(calcPerResearchSpeedBase().div(4), 4, 0)} -> x${!game.quantumUpgradeBought.includes('27') ? dNotation(calcPerResearchSpeedBase().mul(4), 4, 0) : dNotation(calcPerResearchSpeedBase(), 4, 0)})"
+      "Multiply research upgrade effect based on SP (x${dNotation(game.singularityPower.div(10000).log(1000).add(3), 2, 3)})"
     ],
     // 3: Quantum
     [
@@ -66,12 +66,22 @@
       "Multiply Grid Machine Power Based on QL (x${dNotation(D(1.01).pow(game.quantumLab).mul(game.quantumLab.pow(2)).add(1), 4, 2)})",
       "Multiply SP gain Based on Time spent on this Singularity (x${dNotation(D(10).mul(((new Date().getTime() - game.singularityTime)/1000)**0.6), 4, 2)})",
       "Multiply SP gain based on QL (x${dNotation(D(2).pow(D(game.quantumLab).pow(1/3)), 3, 1)})",
-      "Multiply SP gain based on Challenge Recordes (x${dNotation(game.challengeRecord.reduce((a, b) => a.mul(b.add(1)), D(1)).pow(1/4), 4, 1)})",
-      "Boost SP's grid machine Power boost based on SP (^${dNotation(D(1).add(game.singularityPower.log(10).pow(0.8)), 4, 3)})",
+      "Multiply Grid Machine Power Based on Processes (x${dNotation(D(calcMultiProcess()).pow(10), 2, 0)})",
+      "Boost SP's grid machine Power boost based on SP (^${dNotation(D.min(D(10), D(1).add(game.singularityPower.log(10).pow(0.6))), 4, 3)})",
       "Boost SP gain based on Processes (x${dNotation(calcMultiProcess(), 4, 0)})",
       "Passive SP Gain speed affected by Speed Boost"
     ]
   ];
+  Base7Eff = function() {
+    var tempVar = D(1)
+    if (D(10).pow(game.singularityPower.pow(0.5)).gte('1e30000')) {
+      tempVar = tempVar.mul('1e14000');
+      tempVar = tempVar.mul(game.singularityPower.pow(2000));
+    } else {
+      tempVar = tempVar.mul(D(10).pow(game.singularityPower.pow(0.5)));
+    }
+    return tempVar;
+  }
   quantumUpgradeNames = ["Base", "Research", "Quantum", "QoL", "Automate", "Keep", "Singularity"];
   quantumUpgradeRespecConfrim = 10;
   quantumUpgradeRestartConfrim = 10;
@@ -81,7 +91,7 @@
     row4cost: [1, 5, 11, 20, 30, 97, 400],
     row5cost: [1, 4, 10, 17, 26, 86, 4000],
     row6cost: [22, 58, 138, 262, 408, 587, "Infinity"],
-    row7cost: [160, 4500, 24e3, 90e3, 100e3, 170e3, "Infinity"]
+    row7cost: [160, 4500, 20000, 38000, 50000, 84000, 125000]
   };
   qUpgradeRendered = {a30: true, bought: [], force: false};
 
@@ -288,6 +298,7 @@ function getQuantumReqPow() {
   return ((game.challengeEntered != 6 && game.challengeEntered != 7) ? [moneyPow, researchPow] : [D(1), D(1)]);
 }
 function calcQuantumLabGain() {
+  if (Object.keys(tempData).includes('QLGain') && tempData['QLGain'][0] == tickDone) return tempData['QLGain'][1]
   // Money: start from e100, +e5, +e15, +e25, +e35  ... -> (n*(n-1)+n)*5
   var fromMoneyGain = game.money.pow(D(1).div(getQuantumReqPow()[0])).div(1e100).log(10).div(5).sqrt(2).add(1);
   if (fromMoneyGain.isNaN()) fromMoneyGain = D(0);
@@ -302,7 +313,7 @@ function calcQuantumLabGain() {
     ).sub(game.quantumLab),
     getMaxQuantumLabGain()
   );
-
+  tempData['QLGain'] = [tickDone, labGain.floor(0)]
   return labGain.floor(0);
 }
 function dokeepMilestone() {
@@ -321,6 +332,7 @@ function calcQubitSpeed() {
   tempSpd = tempSpd.mul(8); // boost
   tempSpd = tempSpd.mul(singularityBoosts.QubitBoost);
   if (game.achievements.includes(31)) tempSpd = tempSpd.pow(1+calcChallengeDone()/200);
+  if (game.achievements.includes(37)) tempSpd = tempSpd.mul(game.challengeRecord.reduce((a, b) => a.mul(b.add(1)), D(1)).pow(40))
   return tempSpd;
 }
 function calcUsedQubit() {

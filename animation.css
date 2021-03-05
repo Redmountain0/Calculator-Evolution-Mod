@@ -26,6 +26,20 @@
     text-shadow: 0 0 0.4vh #8f24d1;
   }
 }
+@keyframes redGlow {
+  from {
+    color: #d1243f;
+    text-shadow: 0 0 0.4vh #d1243f;
+  }
+  50% {
+    color: #b1241f;
+    text-shadow: 0 0 1.2vh #b1241f;
+  }
+  to {
+    color: #d1243f;
+    text-shadow: 0 0 0.4vh #d1243f;
+  }
+}
 @keyframes whiteGlow {
   from {
     color: #fff;
@@ -80,6 +94,20 @@
   to {
     color: #ccc;
     text-shadow: 0 0 2vh #fff;
+  }
+}
+@keyframes t5Animation {
+  from {
+    color: rgb(124, 23, 23);
+    text-shadow: 0 0 2vh rgb(80, 12, 12);
+  }
+  50% {
+    color: rgb(138, 40, 40);
+    text-shadow: 0 0 0.2vh rgb(160, 76, 76);
+  }
+  to {
+    color: rgb(124, 23, 23);
+    text-shadow: 0 0 2vh rgb(80, 12, 12);
   }
 }
 @keyframes quarkGlow {
@@ -158,6 +186,58 @@
   }
   to {
     background-position-y: 5.8vh;
+  }
+}
+@keyframes btnBgBasic {
+  from {
+      opacity: 0;
+  }
+  5% {
+      opacity: 2
+  }
+  80% {
+      opacity: 0.3;
+  }
+  100% {
+      opacity: 0;
+  }
+}
+@keyframes btnBgMove1 {
+  from {
+      top: calc(-100% - calc(var(--s) / 2));
+      left: calc(-100% - calc(var(--s) / 2));
+  }
+  to {
+      top: calc(50% - calc(var(--s) / 2));
+      left: calc(50% - calc(var(--s) / 2));
+  }
+}
+@keyframes btnBgMove2 {
+  from {
+      top: calc(200% - calc(var(--s) / 2));
+      left: calc(100% - calc(var(--s) / 2));
+  }
+  to {
+      top: calc(50% - calc(var(--s) / 2));
+      left: calc(50% - calc(var(--s) / 2));
+  }
+}
+@keyframes btnBgMove3 {
+  from {
+      top: calc(150% - calc(var(--s) / 2));
+      left: calc(-100% - calc(var(--s) / 2));
+  }
+  to {
+      top: calc(50% - calc(var(--s) / 2));
+      left: calc(50% - calc(var(--s) / 2));
+  }
+}
+@keyframes btnBgMove4 {
+  from {
+      left: calc(200% - calc(var(--s) / 2));
+  }
+  to {
+      left: calc(50% - calc(var(--s) / 2));
   }
 }
 @keyframes hueRotate {

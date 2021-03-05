@@ -7,7 +7,8 @@
     'Richer<br>*', 'A to Œ<br>*', 'Infinity Research<br>*', 'Infinity Boost', '2 more?<br>*',
     'Singularity<br>*', 'Second Singularity<br>*', 'Challenge', 'Bulk QL Challenge<br>*', 'More Challenges<br>*',
     'Mastered<br>*', 'Give me more QUBIT!<br>*', 'Grid Lab<br>*', 'Singularity at light speed<br>*', 'Singularit<br>ies<br>*',
-    'Broken Machine', 'More Broken', 'Bugged Reality<br>*', 'Inf..', 'GG'
+    'New Machine<br>*', '1000 Labs<br>*', 'Overpowered<br>*', 'Grid Master', 'Simulation',
+    'Simulated Dollar<br>*', 'Mastered II', 'Meta', 'Boost goes brrrrr', 'meta-Research'
   ];
   achievementGoal = [
     'Reach ${formatWithBase(63, game.base)}(${dNotation(game.base, 4, 0)})',
@@ -49,14 +50,20 @@
     'Buy all Quantum Upgrades<br>Reward: More Quantum Upgrades',
     'Have ${dNotation(game.quantumLab, 0, 0)}/${dNotation(600, 0, 0)} Quantum Labs<br>Reward: Boost Qubit gain speed based on Challenge Completions (^${1+calcChallengeDone()/200})',
     'Complete Qubit Challenge once<br>Reward: Start challenge with half of goal QL (max. ${dNotation(game.maxQuantumLab, 4, 0)})',
-    'Go Singularity in ${game.t4resetTime}/500 milliseconds<br>Reward: 2 Merger Grid Machine<br>2 Grid Space<br>Generate 10% of SP gain per second',
-    'Go singularity ${dNotation(game.t4resets, 0, 0)}/${dNotation(100, 0, 0)} times<br>Reward: SP gain x4<br>10 extra process',
+    'Go Singularity in ${game.t4resetTime}/500 milliseconds<br>Reward: 2 Merger Grid Machine<br>2 Grid Space',
+    'Go singularity ${dNotation(game.t4resets, 0, 0)}/${dNotation(100, 0, 0)} times<br>Reward: SP gain x4<br>Generate 10% of SP gain per second',
 
-    'Complete Boost Challenge once',
+    'Complete Boost Challenge once<br>Reward: Better RP Machine formula',
+    'Have ${dNotation(game.quantumLab, 0, 0)}/${dNotation(1000, 0, 0)} Quantum Labs<br>Reward: Boost Qubit gain speed based on Challenge Records (x${dNotation(game.challengeRecord.reduce((a, b) => a.mul(b.add(1)), D(1)).pow(40), 1, 0)})',
+    'Have ${dNotation(game.singularityPower, 1, 0)}/${dNotation(1e15, 1, 0)} SP<br>Reward: Game speed x2',
+    'Unlock 25th Grid Space',
+    'Reach ${dNotation(calcMultiProcess(), 1, 0)}/1e15 Multi Process',
+
+    'Have 1 $ in Simulation<br>Reward: Multiply Simulation CPU speed by x2',
+    'Buy all more Quantum Upgrades',
+    'Have 1 Meta Material',
     'Complete Boost Challenge x10',
-    'Reach Infinity$<br>Reward: Game speed x2',
-    'Go Infinity in 5 hours',
-    'Go Infinity in 10 seconds'
+    'Reach 1 RP in Simulation'
   ];
   achievementGoalFunc = [
     'game.number.gte(63)', 'game.money.gte(1)', 'game.shopBought[5] >= 3', 'game.base.gte(10)', 'game.base.gte(36)',
@@ -66,7 +73,8 @@
     'game.money.gte(\'1e1000\')', 'game.base.gte(250)', 'game.researchPoint.gte(D(2).pow(1024))', 'game.qubit.gte(1024)', 'game.quantumLab.gte(82)',
     'game.t4resets.gte(1)', 'game.t4resets.gte(2)', 'calcChallengeDone() >= 1', 'calcQuantumLabGain().gte(20)', 'calcChallengeDone() >= 10',
     'game.quantumUpgradeBought.length>=36', 'game.quantumLab.gte(600)', 'game.wormholeChallengeProgress[6]>=1', 'game.t4resetTime <= 500', 'game.t4resets.gte(100)',
-    'game.wormholeChallengeProgress[7]>=1', 'game.wormholeChallengeProgress[7]>=10', '!game.money.isFinite()', '0', '0'
+    'game.wormholeChallengeProgress[7]>=1', 'game.quantumLab.gte(1000)', 'game.singularityPower.gte(1e15)', 'calcGridOpened() == 25', 'calcMultiProcess().gte(1e15)',
+    'D(GameSlot.simulation.money).gte(1)', 'game.quantumUpgradeBought.length>=49', 'game.metaMaterial.gte(1)', 'game.wormholeChallengeProgress[7]>=10', '0'
   ];
 })();
 
@@ -77,7 +85,7 @@ function initAchievements() {
   tableNode = document.querySelector('#achWarp > tbody');
   var trNode = document.querySelector('#achWarp > tbody > tr:last-child');
   for (var i = 0; i < achievementName.length; i++) {
-    if (i%5 == 0) {
+    if (i%10 == 0) {
       var cNode = document.createElement('tr');
       tableNode.appendChild(cNode);
       trNode = document.querySelector('#achWarp > tbody > tr:last-child');
@@ -92,6 +100,7 @@ function initAchievements() {
 }
 function calcAchievements() {
   var achTxt = '';
+  if (GameSlot.now == 1) return;
   for (var i = 0, l = achievementName.length; i < l; i++) {
     if (game.achievements.includes(i)) continue;
     if (new Function('return ' + achievementGoalFunc[i])()) {

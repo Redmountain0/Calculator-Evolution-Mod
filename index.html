@@ -14,6 +14,7 @@
     <script src="./scripts/progress/reboot.js?ver=1.1.b79" defer></script>
     <script src="./scripts/progress/quantum.js?ver=1.1.b79" defer></script>
     <script src="./scripts/progress/singularity.js?ver=1.1.b79" defer></script>
+    <script src="./scripts/progress/meta.js?ver=1.1.b79" defer></script>
     <script src="./scripts/saveload.js?ver=1.1.b79" defer></script>
     <script src="./scripts/loop.js?ver=1.1.b79" defer></script>
     <script src="./scripts/reset.js?ver=1.1.b79" defer></script>
@@ -36,6 +37,7 @@
         <span class="tabNav t2Nav" onclick="goTab(2)">Research</span>
         <span class="tabNav t3Nav" onclick="goTab(5)" style="display: none;"><span>Quantum</span></span>
         <span class="tabNav t4Nav" onclick="goTab(7)" style="display: none;">Singularity</span>
+        <span class="tabNav t5Nav" onclick="goTab(8)" style="display: none;">Meta</span>
       </div>
       <div id="tabs">
         <!-- Module -->
@@ -88,6 +90,7 @@
         </div>
         <!-- Shop -->
         <div class="tab" style="display:none;">
+          <!-- Program -->
           <span class="shopBox">
             <p class="sectionTxtShop">Programs</p>
             <div class="shopItem" onclick="shopBuy(0)">
@@ -146,6 +149,7 @@
               </div>
             </div>
           </span>
+          <!-- Upgrade -->
           <span class="shopBox">
             <p class="sectionTxtShop">Upgrades</p>
             <div class="shopItem" onclick="shopBuy(5)">
@@ -198,6 +202,7 @@
               </div>
             </div>
           </span>
+          <!-- ??? -->
           <span class="shopBox">
             <p class="sectionTxtShop">???</p>
             <div class="shopItem" style="display:none;" onclick="shopBuy(11)">
@@ -391,6 +396,9 @@
               </div>
             </div>
           </div>
+          <div id="forcereboot" onclick="forcereboot()">
+            Force Reboot
+          </div>
         </div>
         <!-- Achievements -->
         <div class="tab" style="display:none">
@@ -415,6 +423,9 @@
           </div>
           <div id="optionToggle2" class="optionBtn" onclick="optionBtn(2)">
             Offline Progress
+          </div>
+          <div id="optionToggle3" class="optionBtn" onclick="optionBtn(3)">
+            Base Format
           </div>
           <br>
           <div id="themeBtn" class="optionBtn" onclick="game.theme=(game.theme+1)%themeUrls.length;setTheme();">Theme: None</div>
@@ -524,12 +535,56 @@
             </div>
           </div>
         </div>
+        <!-- Meta -->
+        <div class="tab" style="display:none;">
+          <div id="metaButton" onclick="meta()">
+            <div id="metaButtonBgWarp">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <div id="metaInfo">Make <span id="metaQuantity">a</span> Meta material</div>
+            <div id="metaCost">Cost: 1e50 SP</div>
+          </div>
+          <div id="metaDesc">
+            You have 0 Meta materials and 0 Meta Energy
+          </div><br>
+          <div id="metaSimulationUnlock"></div>
+          <div id="metaSimulationWarp">
+            <p class="sectionTxtred sectionTxt">Meta-Programs</p>
+            <div id="meta_programs">
+              <div class="meta_program" onclick="simulationenter()">
+                <span>(M1)</span> <span>Simulator.exe</span>
+              </div>
+            </div>
+          </div>
+          <div id="metaUpgradeWarp">
+
+          </div>
+        </div>
+        <!-- Simulation -->
+        <div class="tab" style="display:none;">
+          <div id="resetButton" onclick="meta()">
+            <div id="resetButtonBgWarp">
+              <div></div>
+              <div></div>
+              <div></div>
+              <div></div>
+            </div>
+            <div id="metaInfo">Make <span id="metaQuantity">a</span> Meta material</div>
+            <div id="metaCost">Cost: 1e50 SP</div>
+          </div>
+        </div>
       </div>
       <div id="commandArea">
 
       </div>
       <div id="programStatusArea">
         <span style="font-size: 1.4vh" id="programStatusProcess" class="normalText">0/10</span>
+      </div>
+      <div id="SimulationQuitArea">
+        <span style="font-size: 1.4vh" class="normalText" onclick="simulationquit()">&lt; Quit Simulation</span>
       </div>
       <div id="infoArea">
         <div id="basicInfo">

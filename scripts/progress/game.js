@@ -126,7 +126,8 @@
 })();
 
 function renderBasic() {
-  $("#basedNumber").innerHTML = formatWithBase(game.number, game.base, game.digits, 1, 60);
+  $("#SimulationQuitArea").style.display = (game.Achievementtoggle ? 'none' : 'block')
+  $("#basedNumber").innerHTML = game.optionToggle[3] ? formatWithBase(game.number, game.base, game.digits, 1, 60) : dNotation(game.number, 1)
   $("#money").innerHTML = dNotation(game.money, 5);
   tempRes = ` <span style="filter: grayscale(${!game.programActive[1]*1})">(+${dNotation(calcMoneyGain(), 2, 2).padEnd(7, 'B').replace(/B/g, "&nbsp;")}$/s)</span>`;
   if (game.t2toggle) tempRes += ` | ${dNotation(game.researchPoint, 4, 0)} RP\n`;
@@ -139,24 +140,25 @@ function renderBasic() {
   // I'm lazy (just copied that from quantum.js, will fix) :v
   if (game.t4toggle) tempRes += ` | ${dNotation(game.singularityPower, 4, 0)} SP\n`;
   $("#otherRes").innerHTML = tempRes;
-  $("#memoryDigit").innerHTML = ("").padStart(Math.min(80, dNum(game.mDigits)-dNum(game.digits)), 0);
+  $("#memoryDigit").innerHTML = game.optionToggle[3] ? ("").padStart(Math.min(80, dNum(game.mDigits)-dNum(game.digits)), 0) : ""
   $("#numberBase").innerHTML = game.base;
 
   // tabs
   $('#mainNav > .tabNav:nth-child(7)').style.display = (game.t3toggle ? 'inline-block' : 'none');
   $('#mainNav > .tabNav:nth-child(7)').classList[calcQuantumLabGain().gte(1)?"add":"remove"]("available")
   $('#mainNav > .tabNav:nth-child(8)').style.display = (game.t4toggle ? 'inline-block' : 'none');
-
+  $('#mainNav > .tabNav:nth-child(9)').style.display = (game.t5toggle ? 'inline-block' : 'none');
+  $('#mainNav > .tabNav:nth-child(3)').style.display = (game.Achievementtoggle ? 'inline-block' : 'none')
   commandFloat();
 
   // programStatusArea
   $("#programStatusArea").style.display = game.t3toggle ? "block" : "none";
   [...document.getElementsByClassName("programStatusNode")].forEach((ele, idx) => {ele.classList[game.programActive[idx]?"add":"remove"]("activated")});
-  $("#programStatusProcess").innerHTML = `${calcMultiProcess()-calcProcessLeft()}/${calcMultiProcess()}`;
+  $("#programStatusProcess").innerHTML = `${dNotation(calcProcessActive(), 2, 0)}/${dNotation(calcMultiProcess(), 2, 0)}`;
 
 }
 function renderModule() {
-  $("#processes").innerHTML = `Process ${calcProcessActive()}/${calcMultiProcess()}`;
+  $("#processes").innerHTML = `Process ${dNotation(calcProcessActive(), 2, 0)}/${dNotation(calcMultiProcess(), 2, 0)}`;
 
   // program
   var programPoint = [-1, 1, 4, 0, 2, 3, -1];
@@ -191,11 +193,12 @@ function renderShop() {
   for (var i = 0; i < 5; i++) {
     $(".shopBox:nth-of-type(2) > .shopItem:nth-of-type(" + (i+1) + ") > .itemCost > .itemCostNum").innerHTML = dNotation(calcShopCost(i+5, game.shopBought[i+5]), 5);
   }
+  $(".shopBox:nth-of-type(2) > .shopItem:nth-of-type(1)").style.display = GameSlot.now ? 'none' : 'block'
   $("#cpuHz").innerHTML = notationSI(calcCPU(), 0);
   $("#cpuSpeed").innerHTML = dNotation(calcCpuUpgradeEffect(), 4, 1);
 }
 function renderOption() {
-  for (var i = 0; i < 3; i++) {
+  for (var i = 0; i < 4; i++) {
     $('#optionToggle' + i).className = 'optionBtn' + ((game.optionToggle[i]) ? '' : ' disabled');
   }
 }
@@ -211,6 +214,7 @@ function renderStat() {
   if (game.t2toggle) $("#statsText").innerHTML += `<br>You spent ${timeNotation((new Date().getTime()-game.rebootTime)/1000)} in this Reboot`;
   if (game.t3toggle) $("#statsText").innerHTML += `<br><br>You've done Quantum ${dNotation(game.t3resets, 4, 0)} times`;
   if (game.t3toggle) $("#statsText").innerHTML += `<br>You spent ${timeNotation((new Date().getTime()-game.quantumTime)/1000)} in this Quantum`;
+  if (game.t4toggle) $("#statsText").innerHTML += `<br>Your Quantum Lab record is ${dNotation(game.maxQuantumLab, 4, 0)}QL`;
   if (game.t4toggle) $("#statsText").innerHTML += `<br><br>You've done Singularity ${dNotation(game.t4resets, 4, 0)} times`;
   if (game.t4toggle) $("#statsText").innerHTML += `<br>You spent ${timeNotation((new Date().getTime()-game.singularityTime)/1000)} in this Singularity`;
 }
@@ -284,9 +288,11 @@ function basicInits() {
   setNotation();
 }
 function calcToggleTabs() {
+  if (GameSlot.now == 0) game.Achievementtoggle = 1; else game.Achievementtoggle = 0;
   if (calcRPGain().gte(1)) game.t2toggle = 1;
   if (game.money.gte(1e80)) game.t3toggle = 1;
   if (game.quantumLab.gte(70)) game.t4toggle = 1;
+  if (game.singularityPower.gte(1e25)) game.t5toggle = 1;
 }
 function activeProgram(num) {
   if (rebooting) return;
@@ -296,17 +302,17 @@ function activeProgram(num) {
   if (num == 6 && (game.programActive[6] || game.researchLevel[1]<1)) return;
   var programCount = calcProcessActive();
   if (game.programActive[num]) {
-    programCount--;
+    programCount = programCount.sub(1);
   } else {
-    programCount++;
+    programCount = programCount.add(1);
   }
-  if (programCount >= calcMultiProcess()+1) {
+  if (programCount >= calcMultiProcess().add(1)) {
     for (var i = 5; i > -1; i--) {
       if (game.programActive[i] && i != num) {
         game.programActive[i] = 0;
-        programCount--;
+        programCount = programCount.sub(1);
       }
-      if (programCount < calcMultiProcess()+1) break;
+      if (programCount.lt(calcMultiProcess().add(1))) break;
     }
   }
   game.programActive[num] = !game.programActive[num];
@@ -320,6 +326,7 @@ function activeProgram(num) {
   renderModule();
 }
 function shopBuy(num) {
+  if (num == 5 && GameSlot.now == 1) return;
   if (game.money.gte(calcShopCost(num, game.shopBought[num])) && game.shopBought[num] < calcShopMax()[num]) {
     switch (num) {
       case 0: case 1: case 2: case 3: case 4:
@@ -336,7 +343,7 @@ function shopBuy(num) {
       game.shopBought[num]++;
     }
   }
-  renderShop();
+  if (tabNow == 1) renderShop();
 }
 function shopMaxBuy(num) {
   var mPoint = 30, maxA = 2**mPoint;
@@ -379,6 +386,7 @@ function calcCpuUpgradeEffect() {
   return eff;
 }
 function calcCPU() {
+  if (Object.keys(tempData).includes('CPU') && tempData['CPU'][0] == tickDone) return tempData['CPU'][1]
   var tempVar = D(1);
   tempVar = tempVar.mul(calcCpuUpgradeEffect().pow(
     game.shopBought[5]+
@@ -388,8 +396,12 @@ function calcCPU() {
   if (game.quantumUpgradeBought.includes('14')) tempVar = tempVar.mul(D(9).pow(game.quantumLab));
   if (game.quantumUpgradeBought.includes('15')) tempVar = tempVar.mul(D.max(1, D(30).pow(D.max(0, calcMaxDigit().sub(calcMaxDigit().lt(2000)?game.digits:0)))));
   if (game.quantumUpgradeBought.includes('16')) tempVar = tempVar.mul(game.researchPoint.add(1).pow(0.25));
-  if (game.quantumUpgradeBought.includes('17')) tempVar = tempVar.mul(D(10).pow(game.singularityPower.pow(0.5)));
+  if (game.quantumUpgradeBought.includes('17')) {
+    tempVar.mul(Base7Eff())
+  }
   if (game.achievements.includes(25)) tempVar = tempVar.mul(25);
+  if (game.achievements.includes(41) && GameSlot.now == 1) tempVar = tempVar.mul(2);
+  tempData['CPU'] = [tickDone, tempVar]
   return tempVar;
 }
 function calcShopCost(idx, lv) {
@@ -403,7 +415,6 @@ function calcShopCost(idx, lv) {
     cost = D(3+lv/9).pow(lv).div(50);
       break;
     default:
-
   }
   if (game.achievements.includes(4)) cost = cost.mul(0.95);
   if (game.achievements.includes(21)) cost = cost.div(10);
@@ -502,44 +513,28 @@ function calcProgram(dt=0) {
 
     // minus bug fix
     if (game.durability.lte(0.01)) game.durability = D(0);
-
-    // hardcap fix
-    if (game.durability.eq(0) && calcRPGain().lt(1)) {
-      commandAppend('< Fatal Error Found...', -120, 1);
-      commandAppend('shutdown system', 0);
-      goTab(2);
-      for (var i = 0; i < game.programActive.length; i++) {
-        game.programActive[i] = 0;
-      }
-      game.shopBought[5] = 0;
-      game.money = D(0);
-      game.rebootNum = D(0);
-      game.durability = D(1);
-      game.base = D(2);
-      game.digits = D(1);
-      game.number = D(0);
-    }
   }
 }
 function calcProcessActive() {
-  var activeProcress = 0;
-  for (var i = 0; i < game.programActive.length; i++) if (game.programActive[i]) activeProcress++;
-  for (var i in game.singularityGrid) activeProcress += game.singularityGrid[i].tier+1;
+  var activeProcress = D(0);
+  for (var i = 0; i < game.programActive.length; i++) if (game.programActive[i]) activeProcress = activeProcress.add(1);
+  for (var i in game.singularityGrid) activeProcress = activeProcress.add(game.singularityGrid[i].tier+1);
   return activeProcress;
 }
 function calcMultiProcess() {
-  var maxProcess = game.researchLevel[1]+1;
-  maxProcess += Math.floor(Math.min(25, game.singularityPower.toNumber()*4)+Math.max(0, game.singularityPower.toNumber()*4-25)**0.5);
-  if (game.achievements.includes(7)) maxProcess += 1;
-  if (game.achievements.includes(34)) maxProcess += 10;
+  var maxProcess = D(game.researchLevel[1]+1);
+  maxProcess = maxProcess.add(D.floor(D.min(25, game.singularityPower.mul(4))+D.max(0, game.singularityPower.mul(4).sub(25)).pow(0.5)));
+  if (game.achievements.includes(7)) maxProcess.add(1);
 
   return maxProcess;
 }
 function calcProcessLeft() {
-  return calcMultiProcess()-calcProcessActive();
+  return calcMultiProcess().sub(calcProcessActive());
 }
 function isProcessExceed() {
-  return calcProcessLeft() < 0;
+  if (Object.keys(tempData).includes('ProcessExceed') && tempData['ProcessExceed'][0] == tickDone) return tempData['ProcessExceed'][1]
+  tempData['ProcessExceed'] = [tickDone, calcProcessLeft().lte(0)]
+  return calcProcessLeft().lt(0);
 }
 
 function bugFixer() {

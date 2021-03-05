@@ -17,6 +17,10 @@ function copyText(str) {
   document.body.removeChild(tempElem);
 }
 
+// optimization
+tempData = {}
+
+errorCount = 0
 // all
 function renderAll() {
   renderBasic();
@@ -46,6 +50,9 @@ function renderAll() {
       break;
     case 7:
     renderSingularity();
+      break;
+    case 8:
+    renderMeta();
       break;
   }
 }
@@ -154,7 +161,7 @@ function blurSettings() {
       if (keyCode == 53 || keyCode == 12) activeProgram(4); // 5
       if (keyCode == 54 || keyCode == 39) activeProgram(5); // 6
       if (keyCode == 55 || keyCode == 36) activeProgram(6); // 7
-      if (keyCode == 56 || keyCode == 38) for (var i = 0; i < 7; i++) if (calcProcessLeft() > 0) activeProgram(i); // 8
+      if (keyCode == 56 || keyCode == 38) for (var i = 0; i < 7; i++) if (calcProcessLeft().gt(0)) activeProgram(i); // 8
     }
 
     if (keyCode == 82) reboot(); // r

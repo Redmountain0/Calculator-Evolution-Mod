@@ -13,6 +13,7 @@ function renderResearch() {
   } else {
     $('#rebootButton').className = "disabled";
   }
+  $('#forcereboot').style.display = game.durability.eq(0) && calcRPGain().lt(1) ? 'block' : 'none'
   $('#rebootDesc').innerHTML = "If you Reboot now, you'll get " + dNotation(calcRPGain(), 4, 0) + " Research Points<br>";
   //$('#rebootDesc').innerHTML += "You lose Number, Digit, Base, Upgrades, Money on Reboot<br>";
   if (!game.programActive[4] || game.shopBought[2] < 3) {
@@ -53,6 +54,18 @@ function reboot() {
     gotRP = calcRPGain();
     rebootReset();
     game.t2resets = game.t2resets.add(1);
+
+    //animation
+    if (calcRebootCooldown() > 1000) commandAppend('reboot', 75);
+    rebooting = 1;
+    $('#rebootButton').innerHTML = "Rebooting";
+    game.t2time = new Date().getTime();
+  }
+}
+function forcereboot() {
+  if (!rebooting) {
+    //calculate
+    rebootReset();
 
     //animation
     if (calcRebootCooldown() > 1000) commandAppend('reboot', 75);
@@ -135,6 +148,7 @@ function calcResearch(dt=0) {
   }
 }
 function calcRPGain() {
+  if (Object.keys(tempData).includes('RPGain') && tempData['RPGain'][0] == tickDone) return tempData['RPGain'][1]
   var tempNum = game.rebootNum.plus(2).pow(1/6).floor().sub(19);
   tempNum = tempNum.mul(D(2).pow(game.researchLevel[6]));
   if (game.quantumUpgradeBought.includes('21')) tempNum = tempNum.mul(10);
@@ -143,34 +157,27 @@ function calcRPGain() {
   if (game.achievements.includes(9)) tempNum = tempNum.mul(D.max(D.max(game.researchPoint, 2).log(3).log(10),1));
   if (game.achievements.includes(26)) tempNum = tempNum.mul(10);
   tempNum = tempNum.mul(singularityBoosts.RpBoost);
+  tempData['RPGain'] = [tickDone, Decimal.max(tempNum, 0)]
   return Decimal.max(tempNum, 0);
 }
 function calcResearchCost(idx, type, lv=game.researchSpeed[idx]) {
   switch (idx) {
     case 0:
       return !type ? D(10+Math.sqrt(lv)).pow(lv/1.2).div(lv+1).floor(0) : D(1e10).mul(D(10).pow(lv**2)).pow(lv/100+1).sub(1e10);
-      break;
     case 1:
       return !type ? D(10+lv**2).pow(lv) : D(1e10).mul(D(10).pow(lv**2+1)).pow(lv/2+1).sub(1e10);
-      break;
     case 2:
       return !type ? D(25).mul(D(2).pow(lv)) : D(1e16).mul(D(10).pow(lv)).pow(Math.sqrt(lv)/4+1);
-      break;
     case 3:
       return !type ? D(4e3).mul(D(1.3+lv/15).pow(lv)) : D(1e32).mul(D(10).pow(lv**1.46)).pow(Math.sqrt(lv)/20+1);
-      break;
     case 4:
       return !type ? D(3e3).mul(D(1.4+lv/9).pow(lv)) : D(1e30).mul(D(10).pow(lv**1.2)).pow(Math.sqrt(lv)/20+1);
-      break;
     case 5:
       return !type ? D(1e6).mul(D(3+lv/5).pow(lv)) : D(1e75).mul(D(lv+10).pow(D(3).pow(lv)));
-      break;
     case 6:
       return !type ? D(1e8).mul(D(2+lv).pow(lv)) : D(1e80).mul(D(1e10).pow(lv)).pow(1+(lv/10)**2);
-      break;
     case 7:
       return !type ? D(1e9).mul(D(1+lv/5).pow(lv)) : D(1e90).mul(D(1e5).pow(lv)).pow(1+(lv/11)**2);
-      break;
     default:
       return D(Infinity);
   }
@@ -180,10 +187,12 @@ function calcPerResearchSpeedBaseBeforeMult() {
   return baseP;
 }
 function calcPerResearchSpeedBase() {
+  if (Object.keys(tempData).includes('RSpeedBase') && tempData['RSpeedBase'][0] == tickDone) return tempData['RSpeedBase'][1]
   var base = calcPerResearchSpeedBaseBeforeMult();
   if (game.quantumUpgradeBought.includes('23')) base = base.mul(10);
-  if (game.quantumUpgradeBought.includes('27')) base = base.mul(4);
+  if (game.quantumUpgradeBought.includes('27')) base = base.mul(game.singularityPower.div(10000).log(1000).add(3));
   if (game.challengeEntered == 4 || game.challengeEntered == 7) base = base.div(20);
+  tempData['RSpeedBase'] = [tickDone, base]
   return base;
 }
 function calcResearchSpeed(lv) {

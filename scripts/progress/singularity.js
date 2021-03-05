@@ -8,7 +8,7 @@
     SpeedBoost: {color: "#0b6363", name: "Speed", hasBoost: true, boostType: "mul", challengeIdx: 5, idx: 5},
     QubitBoost: {color: "#630b56", name: "Qubit", hasBoost: true, boostType: "mul", challengeIdx: 6, idx: 6},
     Incrementer: {color: "#0b3763", name: "Incrementer", hasBoost: false, idx: 7},
-    Booster: {hasArrow: false, color: "#808080", name: "Booster", hasBoost: true, challengeIdx: 7, idx: 8},
+    Booster: {hasArrow: false, color: "#808080", name: "Booster", hasValue: false, hasBoost: true, boostType: "mul", challengeIdx: 7, idx: 8},
     Merger: {hasTier: false, color: "#000000", name: "Merger", hasBoost: false, idx: 9},
     Output: {hasArrow: false, hasTier: false, hasValue: false, name: "Output", hasBoost: false, idx: 10}
   }
@@ -158,10 +158,11 @@ function singularity() {
   commandAppend(`Go singularity (${ordNum(game.t4resets)})`, (30+game.t4resets.toNumber()*3)%360, 1);
 }
 function renderSingularity() {
+  $('#gridReq').style.display = calcGridOpened() >= 25 ? 'none' : 'block'
   $("#singularityButton").className = game.quantumLab.gte(80) ? "" : "disabled";
   $("#singularityDesc").innerHTML = game.quantumLab.gte(80) ? `If you go singularity now, you'll get <b>${dNotation(calcSingularityPowerGain(), 4, 0)} SP</b> ${game.quantumLab.lt(500) ? `(next SP at ${calcSingularityPowerGain(1)} QL)`: ''}` : 'You need 80 Quantum Labs to go Singularity';
   $("#singularityDesc").innerHTML += `<br>You have <b><span style="color: #fff;">${dNotation(game.singularityPower, 4, 0)} Singularity Power</span></b>`;
-  $("#singularityDesc").innerHTML += `<br>Each SP increases Multi Process by 4 (tot ${Math.floor(Math.min(25, game.singularityPower.toNumber()*4)+Math.max(0, game.singularityPower.toNumber()*4-25)**0.5)}, softcap at 25)`
+  $("#singularityDesc").innerHTML += `<br>Each SP increases Multi Process by 4 (tot ${dNotation(Math.min(25, game.singularityPower.toNumber()*4)+Math.max(0, game.singularityPower.toNumber()*4-25)**0.5, 2, 0)}, softcap at 25)`
   $("#singularityDesc").innerHTML += `<br>And boosts grid machine Power by x${dNotation(game.singularityPower.pow(4).pow(game.quantumUpgradeBought.includes('75')?D(1).add(game.singularityPower.log(10).pow(0.8)):1), 4, 0)}`;
   if (calcMilestoneDone() < 7) $("#singularityDesc").innerHTML += `<br>Have ${2**calcMilestoneDone()*2} SP to retain Keep ${romanize(calcMilestoneDone()+1).toUpperCase()}`;
   $("#wormholeChallengeWarp").style.display = game.t4resets.gte(2) ? "block" : "none";
@@ -178,7 +179,7 @@ function calcSingularity(dt) {
   for (var i in singularityBoostsBase) singularityBoosts[i] = D(singularityBoostsBase[i]);
   for (var i in game.singularityGrid) game.singularityGrid[i].update(dt);
   for (var i in mergerWorks) mergerWorks[i] = [...new Set(mergerWorks[i])];
-  if (game.achievements.includes(33)) game.singularityPower = game.singularityPower.add(calcSingularityPowerGain().mul(game.quantumUpgradeBought.includes('78')?calcRealDt(dt):dt).div(10));
+  if (game.achievements.includes(34)) game.singularityPower = game.singularityPower.add(calcSingularityPowerGain().mul(game.quantumUpgradeBought.includes('77')?calcRealDt(dt):dt).div(10));
   if (game.challengeEntered != -1) {
     game.challengeRecord[game.challengeEntered] = D.max(game.challengeRecord[game.challengeEntered], game.quantumLab);
     if (game.quantumLab.gte(calcChallengeGoal(game.challengeEntered))) {
@@ -274,13 +275,13 @@ function singularityGridClick(x, y, side='l') {
   var machineHave = getSingularityMachineHave(thisName);
   f1: if (side == "l") {
     if (typeof thisMachine == "undefined") {
-      if (selectedMachine == -1 || machineHave-clacMachineUsed(thisName) < 1 || calcProcessLeft() < 1) break f1;
+      if (selectedMachine == -1 || machineHave-clacMachineUsed(thisName) < 1 || calcProcessLeft().lt(1)) break f1;
       game.singularityGrid[x + '' + y] = new SingularityMachine({position: {x: x, y: y}, rotate: 0, tier: 0, type: thisName, value: D(1)});
       if (machineHave-clacMachineUsed(thisName) < 1) selectedMachine = -1;
       singularityMachineChanged();
     } else if (thisName == thisMachine.type) {
       for (let i = 0; i < 1+(keyDowns[16]?1:0)*8; i++) {
-        if (machineHave-clacMachineUsed(thisName) < 1 || calcProcessLeft() < 1 || thisMachine.tier >= 9) break f1;
+        if (machineHave-clacMachineUsed(thisName) < 1 || calcProcessLeft().lt(1) || thisMachine.tier >= 9) break f1;
         game.singularityGrid[x + '' + y].tier++;
         if (machineHave-clacMachineUsed(thisName) < 1) selectedMachine = -1;
       }
@@ -371,7 +372,6 @@ function calcSingularityPowerGain(calcNext=0, baseRes=game.quantumLab) {
   if (game.achievements.includes(34)) tempSpGain4 = tempSpGain4.mul(4);
   if (game.quantumUpgradeBought.includes('72')) tempSpGain4 = tempSpGain4.mul(D(10).mul(((new Date().getTime() - game.singularityTime)/1000)**0.6));
   if (game.quantumUpgradeBought.includes('73')) tempSpGain4 = tempSpGain4.mul(D(2).pow(D(game.quantumLab).pow(1/3)));
-  if (game.quantumUpgradeBought.includes('74')) tempSpGain4 = tempSpGain4.mul(game.challengeRecord.reduce((a, b) => a.mul(b.add(1)), D(1)).pow(1/4));
   if (game.quantumUpgradeBought.includes('76')) tempSpGain4 = tempSpGain4.mul(calcMultiProcess());
 
   // return SP gain
@@ -391,9 +391,12 @@ function clacMachineUsed(name) {
   return tempUsed;
 }
 function calcGridMult() {
+  if (Object.keys(tempData).includes('GridMult') && tempData['GridMult'][0] == tickDone) return tempData['GridMult'][1]
   var mul = D(1);
-  mul = mul.mul(game.singularityPower.pow(4).pow(game.quantumUpgradeBought.includes('75')?D(1).add(game.singularityPower.log(10).pow(0.8)):1));
+  mul = mul.mul(game.singularityPower.pow(4).pow(game.quantumUpgradeBought.includes('75')?D.min(D(10), D(1).add(game.singularityPower.log(10).pow(0.6))):1));
   if (game.quantumUpgradeBought.includes('71')) mul = mul.mul(D(1.01).pow(game.quantumLab).mul(game.quantumLab.pow(2)).add(1));
+  if (game.quantumUpgradeBought.includes('74')) mul = mul.mul(calcMultiProcess().pow(10))
+  tempData['GridMult'] = [tickDone, mul]
   return mul;
 }
 function calcWormholeChallengeReq() {
@@ -437,7 +440,7 @@ function calcChallengeGoal(idx, lv=game.wormholeChallengeProgress[idx]) {
       break;
     case 7:
       //goal = D(202).pow(lv/4+1);
-      goal = D(Infinity);
+      goal = D(80).add(2.5*lv*(lv+1))
       break;
   }
   if (lv >= 5) goal = goal.pow(lv/25+0.8);
@@ -524,13 +527,16 @@ class SingularityMachine {
   getPointed = () => {return this.rotate%2 ? (this.position.x+(this.rotate-2)) + '' + this.position.y : this.position.x + '' + (this.position.y-(this.rotate-1))};
   getPointedMachine = () => {return game.singularityGrid[this.getPointed()]};
 
-  getPower (mergerExtra=[]) {
+  getPower(mergerExtra=[]) {
+    if (this.type == "Booster") {
+      return calcGridMult().pow(0.05*this.tier + 0.3).mul('1e30')
+    }
     var tempValue = this.value;
     if (mergerExtra) for (var i = 0, l = mergerExtra; i < mergerExtra.length; i++) if (game.singularityGrid[mergerExtra[i]].type == "Merger") tempValue = tempValue.add(game.singularityGrid[mergerExtra[i]].value);
     var power = tempValue.mul(D(1e4).pow(this.tier));
     var iMachines = this.getInteracts();
-    if (this.type != "Booster") for (var i = 0, l = iMachines.length; i < l; i++) if (iMachines[i].type == "Booster") power = power.mul(iMachines[i].getPower());
     power = power.pow(this.tier/15+0.5);
+    if (this.type != "Booster") for (var i = 0, l = iMachines.length; i < l; i++) if (iMachines[i].type == "Booster") power = power.mul(iMachines[i].getPower());
     power = power.mul(calcGridMult());
     return power;
   }
@@ -540,6 +546,9 @@ class SingularityMachine {
     var value = this.value;
     var effect = D(0);
     switch (this.type) {
+      case "Booster":
+        effect = power;
+        break;
       case "BaseBoost":
         effect = power.log(10);
         break;
@@ -550,7 +559,11 @@ class SingularityMachine {
         effect = power.mul(power.add(1).log(10)).mul(value.add(1).log(10).pow(2)).add(1);
         break;
       case "RpBoost":
-        effect = power.div(1e5).add(1).log(10).pow(2).add(1);
+        if (game.achievements.includes(36)) {
+          effect = power.pow(0.7).mul(power.add(1).log(10)).mul(value.add(1).log(10).pow(2)).add(1);
+        } else {
+          effect = power.div(1e5).add(1).log(10).pow(2).add(1);
+        }
         break;
       case "ResearchSpeedBoost":
         effect = power.pow(0.8).add(1);

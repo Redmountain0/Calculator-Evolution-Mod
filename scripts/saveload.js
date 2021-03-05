@@ -1,5 +1,5 @@
 (function(){
-  savePoint = 'CalculatorEvolutionBeta';
+  savePoint = 'CalculatorEvolutionMod';
 })();
 
 tempGame = {
@@ -51,25 +51,42 @@ tempGame = {
   challengeRecord: new Array(8).fill(D(0)),
   challengeEntered: -1,
   challengeTime: new Date().getTime(),
-  b: 0
+  t5toggle: 0,
+  t5resets: D(0),
+  metaEnergy: D(0),
+  metaMaterial: D(0),
+  metaTime: new Date().getTime(),
+  b: 0,
 };
 game = {};
+tempGameSlot = {main: tempGame, simulation: tempGame, now: 0 /* 0: main; 1: simulation */, b: 2}
 
 //            vvv    commandAppear=1
 function save(c=1) {
   if ((new Date().getTime())-game.lastRestoreSaved >= 1000*3600) {
-    localStorage[`CalculatorEvolution2_restore${game.saveRestorePoint%24}`] = JSON.stringify(game);
+    localStorage[`CalculatorEvolution2_restore${game.saveRestorePoint%24}`] = JSON.stringify(GameSlot);
     game.saveRestorePoint++;
     game.lastRestoreSaved = new Date().getTime();
   }
-  localStorage[savePoint] = JSON.stringify(game);
+  localStorage[savePoint] = JSON.stringify(GameSlot);
   if (c) commandAppend('save', 70);
 }
 function load(c=1) {
   // type fix
   // Number(string) -> Deciamal
   for (const i in tempGame) {
-    if (tempGame[i] instanceof Decimal) {
+    if (Array.isArray(tempGame[i])) {
+      var temp = tempGame[i];
+      game[i] = [];
+
+      for (var j = 0, l = temp.length; j < l; j++) {
+        if (temp[j] instanceof Decimal) {
+          game[i].push(D(temp[j]));
+        } else {
+          game[i].push(temp[j]);
+        }
+      }
+    } else if (tempGame[i] instanceof Decimal) {
       game[i] = D(tempGame[i]);
     } else {
       game[i] = tempGame[i];
@@ -77,21 +94,21 @@ function load(c=1) {
   }
   if (localStorage[savePoint] !== undefined) {
     tempLoad = JSON.parse(localStorage[savePoint]);
+    GameSlot = tempLoad
+    var SaveList = ["main", "simulation"]
+    game = GameSlot[SaveList[GameSlot.now]]
   } else {
-    tempLoad = {};
+    game = {};
   }
   for (const i in game) {
-    if (tempLoad[i] !== undefined) {
-      if (tempGame[i] instanceof Decimal) {
-        game[i] = D(tempLoad[i]);
-      } else {
-        game[i] = tempLoad[i];
-      }
+    if (typeof game[i] == "undefined") continue;
+    if (tempGame[i] instanceof Decimal) {
+      game[i] = D(game[i]);
+    } else {
+      game[i] = game[i];
     }
   }
-  for (var i = 0, l = game.challengeRecord.length; i < l; i++) {
-    game.challengeRecord[i] = D(game.challengeRecord[i]);
-  }
+  for (var i = 0, l = game.challengeRecord.length; i < l; i++) game.challengeRecord[i] = D(game.challengeRecord[i]);
   // Obj -> SingularityMachine
   for (var i in game.singularityGrid) {
     game.singularityGrid[i] = new SingularityMachine(game.singularityGrid[i]);
@@ -117,24 +134,37 @@ function load(c=1) {
 
   // bug fix
   game.quantumUpgradeBought = [...new Set(game.quantumUpgradeBought)];
-
   if (c) commandAppend('load', 70);
 }
 function hardReset() {
-  for (const i in tempGame) {
-    game[i] = tempGame[i];
+  for (const i in tempGameSlot) {
+    GameSlot[i] = tempGameSlot[i];
   }
   save();
 }
-
+function slotchange(slot, c=1) {
+  GameSlot.now = slot
+  var SaveList = ["main", "simulation"]
+  game = GameSlot[SaveList[GameSlot.now]]
+  if (c) commandAppend('Slot changed!', 70);
+  save(0);
+  load(0);
+}
 function exportGame() {
-  copyText(btoa(JSON.stringify(game)));
+  copyText(btoa(JSON.stringify(GameSlot)));
   commandAppend('export game to clipboard');
 }
 function importGame() {
   var recSaveFile = atob(window.prompt("Import Savefile here", ""));
   try {
-    game = JSON.parse(recSaveFile);
+    recSaveFile = JSON.parse(recSaveFile);
+    if (typeof recSaveFile.b == 'number') {
+      GameSlot = {main: recSaveFile, simulation: tempGame, now: 0 /* 0: main; 1: simulation */, b: '0'}
+    } else {
+      GameSlot = recSaveFile
+    }
+    var SaveList = ["main", "simulation"]
+    game = GameSlot[SaveList[GameSlot.now]]
     save(0);
     load(0);
     commandAppend('import string to game');

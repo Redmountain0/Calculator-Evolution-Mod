@@ -108,6 +108,12 @@ body {
   cursor: pointer;
   animation: t4Animation ease 3s infinite;
 }
+.t5Nav {
+  border: 0.35vh solid #702a35;
+  background-color: rgba(107, 25, 45, 0.5);
+  cursor: pointer;
+  animation: t5Animation ease 3s infinite;
+}
 .absoluteElement {
   position: absolute;
 }
@@ -142,6 +148,15 @@ body {
 #programStatusArea > span:not(:first-child).activated {
   background-color: var(--baseCol3);
   box-shadow: 0 0 0.6vh var(--baseCol);
+}
+#SimulationQuitArea {
+  position: absolute;
+  top: 2vh; left: 0.2vw;
+}
+#SimulationQuitArea:hover {
+  position: absolute;
+  top: 2vh; left: 0.2vw;
+  color: var(--baseCol2)
 }
 
 #infoArea {
@@ -425,6 +440,16 @@ body {
   cursor: pointer;
   transition: all 0.4s;
   animation: rebootButtonGlow linear 8s infinite;
+}
+#forcereboot {
+  margin-left: 47vw; margin-top: 1vh;
+  width: 6vw; height: 2vh;
+  font-size: 1.3vh;
+  border-radius: 0.2vh;
+  cursor: pointer;
+  transition: all 0.4s;
+  color: var(--baseCol);
+  background-color: var(--baseCol2);
 }
 #rebootButton:not(.disabled):hover {
   transform: scale(1.1);
@@ -775,8 +800,10 @@ body {
 .tab:nth-of-type(7) {
   text-align: center;
 }
-
 .tab:nth-of-type(8) {
+  text-align: center;
+}
+.tab:nth-of-type(9) {
   text-align: center;
 }
 #singularityButton {
@@ -928,6 +955,123 @@ body {
 #exitChallenge:active {
   transform: scale(1);
   transition: all 0s;
+}
+#metaButton {
+  margin: 0 auto;
+  width: 19vw; height: 5.5vh;
+  font-size: 2.4vh;
+  cursor: pointer;
+  border-radius: 0.3vh;
+  color: #daa; text-shadow: 0 0 0.4vh #fdd;
+  border: 0.4vh solid #8d3e4a;
+  background: radial-gradient(
+    #000 50%,
+    #300
+  );
+  transition: all 0.4s;
+  text-align: center !important;
+}
+#metaButton:not(.disabled):hover {
+  transform: scale(1.1);
+  filter: brightness(0.9);
+  background: radial-gradient(
+    #000 30%,
+    #300
+  );
+  transition: all 0.4s;
+}
+#metaButton:not(.disabled):active {
+  transform: scale(1);
+  filter: brightness(1.5);
+  transition: all 0.1s;
+}
+#metaButton.disabled {
+  cursor: auto;
+  filter: grayscale(1);
+  color: #fff; text-shadow: 0 0 0.4vh #666;
+  background-color: rgb(166,52,191);
+  border: 0.4vh solid #c954e3;
+  transition: all 1s;
+  animation: none;
+}
+#metaButtonBgWarp {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+}
+#metaButtonBgWarp > div {
+  --s: 6vh;
+  position: absolute;
+  background: rgb(162,17,17);
+  background: radial-gradient(circle, rgba(162,17,17,1) 0%, rgba(0,0,0,0) 63%);
+  width: var(--s); height: var(--s);
+  opacity: 0;
+}
+#metaButtonBgWarp > div:nth-child(1) {
+  left: calc(50% - calc(var(--s) / 2));
+  animation: btnBgBasic 5s ease infinite, btnBgMove1 5s ease infinite;
+  animation-delay: 1.3s;
+}
+#metaButtonBgWarp > div:nth-child(2) {
+  left: calc(50% - calc(var(--s) / 2));
+  animation: btnBgBasic 5s ease infinite, btnBgMove2 5s ease infinite;
+  animation-delay: 4.2s;
+}
+#metaButtonBgWarp > div:nth-child(3) {
+  top: calc(50% - calc(var(--s) / 2));
+  animation: btnBgBasic 5s ease infinite, btnBgMove3 5s ease infinite;
+  animation-delay: 3.1s;
+}
+#metaButtonBgWarp > div:nth-child(4) {
+  top: calc(50% - calc(var(--s) / 2));
+  animation: btnBgBasic 5s ease infinite, btnBgMove4 5s ease infinite;
+  animation-delay: 2.4s;
+}
+#metaInfo {
+  position: relative;
+  opacity: 1 !important;
+  top: -98%;
+  font-size: 2.2vh
+}
+#metaCost {
+  position: relative;
+  opacity: 1 !important;
+  top: -94%;
+  font-size: 1.3vh;
+}
+#metaDesc {
+  font-weight: bold;
+  font-size: 1.8vh;
+  color: #5c200a;
+  text-shadow: 0 0 0.8vh #fff, -0.2vh 0 0.3vh #b8638d, 0.2vh 0 0.3vh #f54c8f;
+}
+#metaSimulationUnlock {
+  font-size: 2vh;
+  color: #fc5670;
+}
+.meta_program {
+  width: 20vw;
+  margin: 1vh 0 0 0; padding: 0.3vh 0.3vw;
+  font-size: 1.7vh;
+  border: 0.1vh solid #d12424;
+  background-color: rgba(56, 9, 9, 0.5);
+  filter: blur(0.08vh);
+  cursor: pointer;
+  animation: redGlow ease 5s infinite;
+  transition: all 0.3s;
+  text-align: left;
+}
+#meta_programs {
+  margin: 1.4vh 0 0 4.5vw;
+}
+.program:hover {
+  border: 0.1vh solid #fc1a1a;
+  background-color: rgba(56, 9, 9, 0.8);
+  filter: blur(0);
+}
+.sectionTxtred {
+  margin: 1.4vh 0 0 3.5vw;
+  font-size: 2.5vh; color: #c20; text-shadow: 0 0 0.4vh #d33;
 }
 
 #debugInfoArea {
