@@ -18,7 +18,8 @@
     <script src="./scripts/saveload.js?ver=1.1.b79" defer></script>
     <script src="./scripts/loop.js?ver=1.1.b79" defer></script>
     <script src="./scripts/reset.js?ver=1.1.b79" defer></script>
-    <title>Calculator Evolution v1.1.b79</title>
+    <script src="./scripts/updatelog.js?ver=1.1.b79" defer></script>
+    <title>Calculator Evolution Mod v1.0.4</title>
   </head>
   <body>
     <div id="warpAll">
@@ -39,6 +40,7 @@
         <span class="tabNav t4Nav" onclick="goTab(7)" style="display: none;">Singularity</span>
         <span class="tabNav t5Nav" onclick="goTab(8)" style="display: none;">Meta</span>
       </div>
+      <div id="UpdateLogTable"></div>
       <div id="tabs">
         <!-- Module -->
         <div class="tab">
@@ -452,7 +454,10 @@
           <br>
           <a class="optionBtn" style="text-decoration: none;" href="https://discord.gg/wkdVQxT" target="_blank">
             My Discord
-          </a>
+          </a><br><br>
+          <div class="optionBtn" onclick="Toggleupdatelog(1)">
+            Update Log
+          </div>
           <div class="normalText" style="margin-top: 1vh; font-size: 1.3vh;">
             Hotkeys<br>
             -----------<br>

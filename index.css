@@ -1073,6 +1073,42 @@ body {
   margin: 1.4vh 0 0 3.5vw;
   font-size: 2.5vh; color: #c20; text-shadow: 0 0 0.4vh #d33;
 }
+#metaUpgradeWarp {
+  margin: -8vh 0 0 30vw;
+}
+.MetaUpgradeDescNode {
+  font-size: 2vh;
+}
+.MetaDescPurple {
+  color: #808;
+}
+.MetaDescRed {
+  color: #800;
+}
+.MetaUpgradeNode {
+  width: 25vh; height: 10vh;
+  color: #fcc; text-shadow: 0 0 1vh #fff; font-size: 1.4vh;
+  background-color: #300;
+  transition: background-color 0.3s;
+  border-radius: 10%;
+}
+.MetaUpgradeNode:hover {
+  background-color: #400;
+}
+.MetaUpgradeNode.bought {
+  background-color: #533;
+  color: #fff;
+}
+.MetaUpgradePurple {
+  background-color: #303; color: #fcf;
+}
+.MetaUpgradePurple:hover {
+  background-color: #404;
+}
+.MetaUpgradePurple.bought {
+  background-color: #535;
+  color: #fff;
+}
 
 #debugInfoArea {
   position: absolute;
@@ -1088,4 +1124,34 @@ body {
 
 .normalText {
   color: var(--baseCol); font-size: 1.8vh;
+}
+#UpdateLogTable {
+  position: absolute; z-index: 3;
+  top: 10vw;
+  left: 50%; margin-left: -30%;
+  width: 60%; height: 70%;
+  padding: 0.3vh 0.5vw;
+  font-size: 1.8vh;
+  background-color: rgba(20, 20, 20, 0.5);
+  border: 0.3vh solid #fff;
+  box-shadow: 0 0 0.3vh #fff inset, 0 0 0.5vh #fff;
+  backdrop-filter: blur(0.5vh) brightness(1.4);
+  opacity: 0;
+  animation: var(--whiteglow);
+  border-radius: 0.6vh;
+  pointer-events: none;
+  transition: opacity 0.3s, top 0.2s, left 0.2s;
+  text-align: left;
+}
+#updateLogExit {
+  position: absolute; z-index: 4;
+  left: 96%; top: 2%;
+  width: 3.4%; height: 7%;
+  font-size: 4vh;
+  cursor: pointer;
+  transition: 0.5s;
+}
+#updateLogExit:hover {
+  text-shadow: none;
+  transition: 0.5s;
 }

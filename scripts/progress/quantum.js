@@ -299,10 +299,10 @@ function getQuantumReqPow() {
 }
 function calcQuantumLabGain() {
   if (Object.keys(tempData).includes('QLGain') && tempData['QLGain'][0] == tickDone) return tempData['QLGain'][1]
-  // Money: start from e100, +e5, +e15, +e25, +e35  ... -> (n*(n-1)+n)*5
+  // Money: start from e100, +e5, +e15, +e25, +e35  ... -> 10^((n*(n-1)+n)*5)*1e100
   var fromMoneyGain = game.money.pow(D(1).div(getQuantumReqPow()[0])).div(1e100).log(10).div(5).sqrt(2).add(1);
   if (fromMoneyGain.isNaN()) fromMoneyGain = D(0);
-  // RP   : start from e11, +10^0.5, +10^1.5, +10^2.5 ... -> (n*(n-1)+n)/2
+  // RP   : start from e11, +10^0.5, +10^1.5, +10^2.5 ... -> 10^((n*(n-1)+n)/2)*1e11
   var fromRpGain = game.researchPoint.pow(D(1).div(getQuantumReqPow()[1])).div(1e11).log(10).mul(2).sqrt(2).add(1.000004); // <- .000004 is for floting point fix
   if (fromRpGain.isNaN()) fromRpGain = D(0);
 

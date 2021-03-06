@@ -249,6 +249,8 @@ function goTab(num) {
     tabNow = num;
     renderAll();
   }
+  // disable update log
+  Toggleupdatelog(0)
 }
 function deleteEvents(tab) {
   // TODO

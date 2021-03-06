@@ -18,4 +18,5 @@ setInterval( function () {
 
 load();
 initAchievements();
+initMetaUpgrades()
 basicInits();
