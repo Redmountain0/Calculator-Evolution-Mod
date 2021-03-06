@@ -15,6 +15,9 @@ UpdateLog = {
 '1.0.4': `
 &gt; Added Meta Upgrade (*It only has graphics, and it's no use for now)<br>
 &gt; Added Update Log
+`,
+'1.0.5': `
+%gt; Fixed Import bug
 `
 }
 function Toggleupdatelog(num) {
