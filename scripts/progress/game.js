@@ -526,7 +526,7 @@ function calcProcessActive() {
 }
 function calcMultiProcess() {
   var maxProcess = D(game.researchLevel[1]+1);
-  maxProcess = maxProcess.add(D.floor(D.min(25, game.singularityPower.mul(4))+D.max(0, game.singularityPower.mul(4).sub(25)).pow(0.5)));
+  maxProcess = maxProcess.add(D.floor(D.min(25, game.singularityPower.mul(4)).add(D.max(0, game.singularityPower.mul(4).sub(25)).pow(0.5))));
   if (game.achievements.includes(7)) maxProcess.add(1);
 
   return maxProcess;
