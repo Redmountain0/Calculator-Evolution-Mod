@@ -244,7 +244,7 @@ function getSingularityMachineHave(name) {
   }
   switch (name) {
     case "Incrementer":
-      return 2+calcChallengeDone();
+      return calcChallengeDone()+game.metaUpgradeBought.includes(11) ? 12 : 2;
     case "Output":
       return 1;
     case "Merger":
@@ -259,7 +259,7 @@ function wormholeChallengeEnter(idx) {
     game.challengeEntered = idx;
     game.quantumUpgradeBought = [];
     singularityReset();
-   if (game.achievements.includes(32) && game.wormholeChallengeProgress[game.challengeEntered] != 10 && game.challengeEntered != 7) game.quantumLab = D.min(game.maxQuantumLab, calcChallengeGoal(idx).div(2)).floor(0);
+   if (game.achievements.includes(32)) game.quantumLab = game.challengeRecord[idx]
   }
 }
 function renderSingularityInfo() {
@@ -409,7 +409,10 @@ function canEnterWoemholeChallenge() {
   return game.t4resets.gte(calcWormholeChallengeReq());
 }
 function calcRealDt(dt=0) {
-  return D(dt).mul(singularityBoosts.SpeedBoost).mul(game.achievements.includes(37)?2:1);
+  realDt = D(dt).mul(singularityBoosts.SpeedBoost)
+  realDt = realDt.mul(game.achievements.includes(37)?2:1);
+  if (GameSlot.now == 1 && GameSlot.main.metaUpgradeBought.includes(1)) realDt = realDt.mul(16)
+  return realDt
 }
 function calcChallengeDone() {
   return game.wormholeChallengeProgress.reduce((a, b) => a + b, 0);
@@ -436,7 +439,7 @@ function calcChallengeGoal(idx, lv=game.wormholeChallengeProgress[idx]) {
       goal = D(50).add(10*lv);
       break;
     case 6:
-      goal = D(73).add((10+lv)*lv);
+      goal = D(73).add((8+lv)*lv);
       break;
     case 7:
       //goal = D(202).pow(lv/4+1);

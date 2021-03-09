@@ -392,7 +392,7 @@ function calcCPU() {
   var tempVar = D(1);
   tempVar = tempVar.mul(calcCpuUpgradeEffect().pow(
     game.shopBought[5]+
-    game.researchLevel[0]*(game.quantumUpgradeBought.includes('13')?2:1)
+    game.researchLevel[0]*(game.quantumUpgradeBought.includes('13')?2:1)*(GameSlot.now == 1 && GameSlot.main.metaUpgradeBought.includes(3)?2:1)
   )).mul(getOverclockPower());
   tempVar = tempVar.mul(calcQubitEffect());
   if (game.quantumUpgradeBought.includes('14')) tempVar = tempVar.mul(D(9).pow(game.quantumLab));
@@ -401,6 +401,7 @@ function calcCPU() {
   if (game.quantumUpgradeBought.includes('17')) {
     tempVar.mul(Base7Eff())
   }
+  if (GameSlot.now == 1 && GameSlot.main.metaUpgradeBought.includes(0)) tempVar = tempVar.mul(256)
   if (game.achievements.includes(25)) tempVar = tempVar.mul(25);
   if (game.achievements.includes(41) && GameSlot.now == 1) tempVar = tempVar.mul(2);
   tempData['CPU'] = [tickDone, tempVar]

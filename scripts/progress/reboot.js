@@ -24,7 +24,13 @@ function renderResearch() {
     $('#rebootDesc').innerHTML += " on Reboot<br>";
   }
   if (game.shopBought[2] >= 1 && !game.programActive[4]) $('#rebootDesc').innerHTML += "<span style=\"color: red; text-shadow: 0 0 0.4vh #f00;\">WARNING! You didn't activated Data_Holder.exe!</span><br>"
-  if (calcRPGain().lte(1e10)) $('#rebootDesc').innerHTML += "You need to reach " + formatWithBase(calcRPGain().plus(20).pow(6).sub(1).ceil(), game.base) + "(" + game.base + ") to get next RP";
+  if (calcRPGain().lte(1e10)) {
+    if (GameSlot.now == 1 && GameSlot.main.metaUpgradeBought.includes(2)) {
+      $('#rebootDesc').innerHTML += "You need to reach " + formatWithBase(calcRPGain().plus(10).pow(6).sub(1).ceil(), game.base) + "(" + game.base + ") to get next RP";
+    } else {
+      $('#rebootDesc').innerHTML += "You need to reach " + formatWithBase(calcRPGain().plus(20).pow(6).sub(1).ceil(), game.base) + "(" + game.base + ") to get next RP";
+    }
+  }
   $('#rpDisplay').innerHTML = "You have " + dNotation(game.researchPoint, 4, 0) + " Research Points";
   for (var i = 0; i < 8; i++) {
     $('.research:nth-of-type(' + (i+1) + ') > .researchProgress > .innerBar').style.width = Math.min(1, game.researchProgress[i])*26 + 'vw';
@@ -149,7 +155,7 @@ function calcResearch(dt=0) {
 }
 function calcRPGain() {
   if (Object.keys(tempData).includes('RPGain') && tempData['RPGain'][0] == tickDone) return tempData['RPGain'][1]
-  var tempNum = game.rebootNum.plus(2).pow(1/6).floor().sub(19);
+  var tempNum = game.rebootNum.plus(2).pow(1/6).floor().sub(GameSlot.now == 1 && GameSlot.main.metaUpgradeBought.includes(2) ? 9 : 19);
   tempNum = tempNum.mul(D(2).pow(game.researchLevel[6]));
   if (game.quantumUpgradeBought.includes('21')) tempNum = tempNum.mul(10);
   if (game.quantumUpgradeBought.includes('22')) tempNum = tempNum.mul(D(1.2).pow(game.qubit).pow(D.min(game.researchPoint.add(1).log(10).div(25), 1)));

@@ -8,7 +8,7 @@
     'Singularity<br>*', 'Second Singularity<br>*', 'Challenge', 'Bulk QL Challenge<br>*', 'More Challenges<br>*',
     'Mastered<br>*', 'Give me more QUBIT!<br>*', 'Grid Lab<br>*', 'Singularity at light speed<br>*', 'Singularit<br>ies<br>*',
     'New Machine<br>*', '1000 Labs<br>*', 'Overpowered<br>*', 'Grid Master', 'Simulation',
-    'Simulated Dollar<br>*', 'Mastered II', 'Meta', 'Boost goes brrrrr', 'meta-Research'
+    'Simulated Dollar<br>*', 'Mastered II', 'Meta', 'OverPowered', 'Boost goes brrrrr', 'meta-Research'
   ];
   achievementGoal = [
     'Reach ${formatWithBase(63, game.base)}(${dNotation(game.base, 4, 0)})',
@@ -49,7 +49,7 @@
 
     'Buy all Quantum Upgrades<br>Reward: More Quantum Upgrades',
     'Have ${dNotation(game.quantumLab, 0, 0)}/${dNotation(600, 0, 0)} Quantum Labs<br>Reward: Boost Qubit gain speed based on Challenge Completions (^${1+calcChallengeDone()/200})',
-    'Complete Qubit Challenge once<br>Reward: Start challenge with half of goal QL (max. ${dNotation(game.maxQuantumLab, 4, 0)})',
+    'Complete Qubit Challenge once<br>Reward: Start challenge with record QL',
     'Go Singularity in ${game.t4resetTime}/500 milliseconds<br>Reward: 2 Merger Grid Machine<br>2 Grid Space',
     'Go singularity ${dNotation(game.t4resets, 0, 0)}/${dNotation(100, 0, 0)} times<br>Reward: SP gain x4<br>Generate 10% of SP gain per second',
 
@@ -62,7 +62,9 @@
     'Have 1 $ in Simulation<br>Reward: Multiply Simulation CPU speed by x2',
     'Buy all more Quantum Upgrades',
     'Have 1 Meta Material',
+    'Have 1 Meta Energy',
     'Complete Boost Challenge x10',
+
     'Reach 1 RP in Simulation'
   ];
   achievementGoalFunc = [
@@ -74,7 +76,8 @@
     'game.t4resets.gte(1)', 'game.t4resets.gte(2)', 'calcChallengeDone() >= 1', 'calcQuantumLabGain().gte(20)', 'calcChallengeDone() >= 10',
     'game.quantumUpgradeBought.length>=36', 'game.quantumLab.gte(600)', 'game.wormholeChallengeProgress[6]>=1', 'game.t4resetTime <= 500', 'game.t4resets.gte(100)',
     'game.wormholeChallengeProgress[7]>=1', 'game.quantumLab.gte(1000)', 'game.singularityPower.gte(1e15)', 'calcGridOpened() == 25', 'calcMultiProcess().gte(1e15)',
-    'D(GameSlot.simulation.money).gte(1)', 'game.quantumUpgradeBought.length>=49', 'game.metaMaterial.gte(1)', 'game.wormholeChallengeProgress[7]>=10', '0'
+    'D(GameSlot.simulation.money).gte(1)', 'game.quantumUpgradeBought.length>=49', 'game.metaMaterial.gte(1)', 'game.metaEnergy.gte(1)', 'game.wormholeChallengeProgress[7]>=10',
+    'D(GameSlot.simulation.researchPoint).gte(1)'
   ];
 })();
 

@@ -55,6 +55,7 @@ tempGame = {
   metaEnergy: D(0),
   metaMaterial: D(0),
   metaTime: new Date().getTime(),
+  metaUpgradeBought: [],
   b: 0,
 };
 game = {};
@@ -170,11 +171,11 @@ function importGame() {
   var recSaveFile = atob(window.prompt("Import Savefile here", ""));
   try {
     recSaveFile = JSON.parse(recSaveFile);
-    if (typeof recSaveFile.b == 'number') {
+    if (typeof recSaveFile.main == undefined) {
       if (D(recSaveFile.singularityPower).gte(9e8)) {
         GameSlot = JSON.parse('{"main":{"gameSpeed":1,"lastRestoreSaved":0,"saveRestorePoint":0,"startTime":1614997802983,"number":"0","rebootNum":"0","base":"2","digits":"1","mDigits":"6","tLast":1614997831015,"programActive":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"money":"0","shopBought":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"researchPoint":"0","researchSpeed":[0,0,0,0,0,0,0,0,0],"researchLevel":[0,0,0,0,0,0,0,0,0],"researchProgress":[0,0,0,0,0,0,0,0,0],"rebootTime":1614997802983,"t2toggle":1,"t2time":0,"t2resets":"0","optionToggle":[1,1,1,1,1,1,1,1,1],"theme":0,"notation":0,"hyperMode":false,"achievements":[0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34],"durability":"1","t3toggle":1,"t3resets":"0","quantumLab":"0","maxQuantumLab":"0","qubit":"68","qubitProgress":"16449.196678877390596","quantumUpgradeBought":[],"quantumUpgradePreset":{},"quantumAutomateToggle":[1,1,1,1,1,1,1],"quantumTime":1614997802983,"t4toggle":1,"t4resets":"2","t4resetTime":1e+110,"singularityTime":1614997802983,"singularityGrid":{},"singularityGridActivate":0,"singularityPower":"900000000","wormholeChallengeProgress":[10,10,10,10,10,10,2,0],"challengeRecord":["0","0","0","0","0","0","0","0"],"challengeEntered":-1,"challengeTime":1614997802983,"t5toggle":0,"t5resets":"0","metaEnergy":"0","metaMaterial":"0","metaTime":1614997802983,"b":1,"Achievementtoggle":1},"simulation":{"gameSpeed":1,"lastRestoreSaved":0,"saveRestorePoint":0,"startTime":1614997802983,"number":"0","rebootNum":"0","base":"2","digits":"1","mDigits":"6","tLast":1614997802983,"programActive":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"money":"0","shopBought":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"researchPoint":"0","researchSpeed":[0,0,0,0,0,0,0,0,0],"researchLevel":[0,0,0,0,0,0,0,0,0],"researchProgress":[0,0,0,0,0,0,0,0,0],"rebootTime":1614997802983,"t2toggle":0,"t2time":0,"t2resets":"0","optionToggle":[1,1,1,1,1,1,1,1,1],"theme":0,"notation":0,"hyperMode":false,"achievements":[],"durability":"1","t3toggle":0,"t3resets":"0","quantumLab":"0","maxQuantumLab":"0","qubit":"0","qubitProgress":"0","quantumUpgradeBought":[],"quantumUpgradePreset":{},"quantumAutomateToggle":[1,1,1,1,1,1,1],"quantumTime":1614997802983,"t4toggle":0,"t4resets":"0","t4resetTime":1e+110,"singularityTime":1614997802983,"singularityGrid":{},"singularityGridActivate":0,"singularityPower":"0","wormholeChallengeProgress":[0,0,0,0,0,0,0,0],"challengeRecord":["0","0","0","0","0","0","0","0"],"challengeEntered":-1,"challengeTime":1614997802983,"t5toggle":0,"t5resets":"0","metaEnergy":"0","metaMaterial":"0","metaTime":1614997802983,"b":0},"now":0,"b":"0"}')
       } else {
-        GameSlot = {main: recSaveFile, simulation: tempGame, now: 0 /* 0: main; 1: simulation */, b: '0'}
+        GameSlot = {main: recSaveFile, simulation: tempGame, now: 0 /* 0: main; 1: simulation */, b: 0}
       }
     } else {
       GameSlot = recSaveFile
