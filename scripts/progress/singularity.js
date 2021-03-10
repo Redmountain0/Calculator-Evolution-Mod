@@ -244,7 +244,7 @@ function getSingularityMachineHave(name) {
   }
   switch (name) {
     case "Incrementer":
-      return calcChallengeDone()+game.metaUpgradeBought.includes(11) ? 12 : 2;
+      return calcChallengeDone()+(game.metaUpgradeBought.includes(11) ? 12 : 2);
     case "Output":
       return 1;
     case "Merger":

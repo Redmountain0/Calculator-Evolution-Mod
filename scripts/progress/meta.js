@@ -14,6 +14,8 @@
 })();
 
 function renderMeta() {
+    $('#metaQuantity').innerHTML = calcMetaMaterialGain().valueOf() <= 1 ? 'a' : calcMetaMaterialGain()
+    $('#metaQuantity2').innerHTML = calcMetaEnergyGain().valueOf() <= 1 ? 'a' : calcMetaEnergyGain()
     $("#metaCost").innerHTML = `Cost: ${dNotation(getMetaReq(), 0, 0)} SP`
     $("#metaCost2").innerHTML = `Cost: ${formatWithBase(getMetaReq(1), GameSlot.simulation.base)} (${GameSlot.simulation.base})`
     $("#metaButton").className = game.singularityPower.gte(getMetaReq()) ? "" : "disabled";
@@ -114,7 +116,7 @@ function getMetaReq(c=0) {
 function calcMetaMaterialGain() {
     if (Object.keys(tempData).includes('MMGain') && tempData['MMGain'][0] == tickDone) return tempData['MMGain'][1]
     // SP: start from e50 ... -> 1e50*10^(5x(x+2))
-    var fromSPGain = game.SingularityPower.pow(D(1)).div(1e50).log(10).div(5).add(1).sqrt(2);
+    var fromSPGain = game.singularityPower.pow(D(1)).div(1e50).log(10).div(5).add(1).sqrt(2);
     if (fromSPGain.isNaN()) fromSPGain = D(0);
     
     var labGain = D.floor(fromSPGain);
@@ -125,5 +127,5 @@ function calcMetaEnergyGain() {
     var MEGain = D(GameSlot.simulation.number).plus(1).pow(1/6).sub(5).round().div(2).sqrt().floor().add(1)
     if (MEGain.isNaN()) MEGain = D(0);
 
-    return MEGain
+    return MEGain.sub(game.metaEnergy)
 }

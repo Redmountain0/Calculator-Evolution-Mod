@@ -34,6 +34,11 @@ UpdateLog = [{
 `,
 '1.1.1': `
 &gt; Fixed Process bug
+`,
+'1.1.2': `
+&gt; Fixed Incrementer amount bug<br>
+&gt; Changed "Default Save" condition (9e8 SP > 9e8 SP or 1+ Infinitied stat)<br>
+&gt; Added Meta button Quantity
 `
 }]
 function Toggleupdatelog(num) {
