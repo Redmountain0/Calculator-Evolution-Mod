@@ -172,7 +172,7 @@ function renderSingularity() {
   [...document.getElementsByClassName("wormholeChallengeName")].forEach((ele, idx) => ele.innerHTML = `${singularityMachineData[challengeIdx[idx]].name} Challenge (${game.wormholeChallengeProgress[idx]}/10)`);
   [...document.getElementsByClassName("wormholeChallenge")].forEach((ele, idx) => ele.style.setProperty("--progress", `${10*game.wormholeChallengeProgress[idx]}%`));
   [...document.getElementsByClassName("wormholeChallengeEffect")].forEach((ele, idx) => ele.innerHTML = challengeDesc[idx]);
-  [...document.getElementsByClassName("wormholeChallengeGoal")].forEach((ele, idx) => ele.innerHTML = game.wormholeChallengeProgress[idx] == 10 ? `Record: ${game.challengeRecord[idx]} QL` : `Goal: ${dNotation(calcChallengeGoal(idx), 4, 0)} QL`);
+  [...document.getElementsByClassName("wormholeChallengeGoal")].forEach((ele, idx) => ele.innerHTML = game.wormholeChallengeProgress[idx] == 10 ? `Record: ${game.challengeRecord[idx]} QL` : `Goal: ${game.challengeRecord[idx]}/${dNotation(calcChallengeGoal(idx), 4, 0)} QL`);
   $("#exitChallenge").style.display = game.challengeEntered == -1 ? "none" : "block";
 }
 function calcSingularity(dt) {

@@ -27,10 +27,8 @@ UpdateLog = [{
 &gt; Added Simulation Reset Button<br>
 &gt; Fixed Import bug<br>
 &gt; Faster Gameplay<br>
-<div style="font-size: 1.3vh; margin-left: 0.8vw;">
-- Buffed Quantum VII (x2 > x3)<br>
-- Nerfed Quantum Challenge Req
-</div>
+<span style="font-size: 1.3vh; margin-left: 0.8vw;">- Buffed Quantum VII (x2 > x3)</span><br>
+<span style="font-size: 1.3vh; margin-left: 0.8vw;">- Nerfed Quantum Challenge Req</span>
 `,
 '1.1.1': `
 &gt; Fixed Process bug
@@ -42,6 +40,12 @@ UpdateLog = [{
 `,
 '1.1.3': `
 &gt; Fixed Process bug
+`,
+'1.1.4': `
+&gt; Fixed Meta display<br>
+&gt; Fixed Import bug<br>
+&gt; Added some achievements<br>
+&gt; Better Challenge display
 `
 }]
 function Toggleupdatelog(num) {

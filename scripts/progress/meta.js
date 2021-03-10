@@ -20,9 +20,11 @@ function renderMeta() {
     $("#metaCost2").innerHTML = `Cost: ${formatWithBase(getMetaReq(1), GameSlot.simulation.base)} (${GameSlot.simulation.base})`
     $("#metaButton").className = game.singularityPower.gte(getMetaReq()) ? "" : "disabled";
     $("#metaButton2").className = D(GameSlot.simulation.number).gte(getMetaReq(1)) ? "" : "disabled";
+    $("#metaButton2").style.display = game.achievements.includes(42) ? "inline-block" : "none";
     $("#metaDesc").innerHTML = `You have ${dNotation(game.metaMaterial, 3, 0)} Meta materials and ${dNotation(game.metaEnergy, 3, 0)} Meta Energy`;
-    $("#metaSimulationWarp").display = game.achievements.includes(40) ? "block" : "none";
-    $("#metaSimulationUnlock").innerHTML = game.achievements.includes(40) ? '' : `Reach ${dNotation(calcMultiProcess(), 1, 0)}/${dNotation(1e15, 1, 0)} Process to Unlock Simulation`
+    $("#metaSimulationWarp").style.display = game.achievements.includes(39) ? "block" : "none";
+    $("#metaUpgradeWarp").style.display = game.achievements.includes(42) ? "block" : "none";
+    $("#metaSimulationUnlock").innerHTML = game.achievements.includes(39) ? '' : `Reach ${dNotation(calcMultiProcess(), 1, 0)}/${dNotation(1e15, 1, 0)} Process to Unlock Simulation`
     for (var i = 0; i < metaUpgradeDesc.length; i++) {
         var index = [2, 3, 5, 6]
         if (game.metaUpgradeBought.includes(i)) {
