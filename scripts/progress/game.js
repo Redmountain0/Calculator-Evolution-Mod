@@ -308,7 +308,7 @@ function activeProgram(num) {
   } else {
     programCount = programCount.add(1);
   }
-  if (programCount >= calcMultiProcess().add(1)) {
+  if (programCount.gte(calcMultiProcess().add(1))) {
     for (var i = 5; i > -1; i--) {
       if (game.programActive[i] && i != num) {
         game.programActive[i] = 0;
@@ -536,7 +536,7 @@ function calcProcessLeft() {
 }
 function isProcessExceed() {
   if (Object.keys(tempData).includes('ProcessExceed') && tempData['ProcessExceed'][0] == tickDone) return tempData['ProcessExceed'][1]
-  tempData['ProcessExceed'] = [tickDone, calcProcessLeft().lte(0)]
+  tempData['ProcessExceed'] = [tickDone, calcProcessLeft().lt(0)]
   return calcProcessLeft().lt(0);
 }
 

@@ -39,6 +39,9 @@ UpdateLog = [{
 &gt; Fixed Incrementer amount bug<br>
 &gt; Changed "Default Save" condition (9e8 SP > 9e8 SP or 1+ Infinitied stat)<br>
 &gt; Added Meta button Quantity
+`,
+'1.1.3': `
+&gt; Fixed Process bug
 `
 }]
 function Toggleupdatelog(num) {
@@ -52,3 +55,6 @@ function Toggleupdatelog(num) {
     if (num != 1) $('#UpdateLogTable').innerHTML += `<div id="updateLogMove1" onclick="Toggleupdatelog(${num-1})"><</div>`
     if (num != UpdateLog.length) $('#UpdateLogTable').innerHTML += `<div id="updateLogMove2" onclick="Toggleupdatelog(${num+1})">></div>`
 }
+
+var LastVersion = Object.keys(UpdateLog[UpdateLog.length-1])
+$('title').innerHTML = `Calculator Evolution Mod v${LastVersion[LastVersion.length-1]}`
