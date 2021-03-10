@@ -549,6 +549,7 @@ function bugFixerNaN() {
       bugfixerConfirm = 0;
       return;
     }
+    
     game.money = D(0);
     game.number = D(0);
     game.qubit = D(0);
