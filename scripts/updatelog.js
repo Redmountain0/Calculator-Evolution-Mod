@@ -47,6 +47,14 @@ UpdateLog = [{
 &gt; Added some achievements<br>
 &gt; Better Challenge display
 `
+}, {
+'1.2': `
+&gt; Added some achievements<br>
+&gt; Changed some Meta upgrades<br>
+&gt; Added Meta Stat<br>
+&gt; Added Meta Energy req slice (101010100100101 > 101010100...)<br>
+&gt; Fixed "Multi Process" achievement reward (It was not doing anything)<br>
+`
 }]
 function Toggleupdatelog(num) {
     $('#UpdateLogTable').style.opacity = num>0 ? 0.8 : 0;

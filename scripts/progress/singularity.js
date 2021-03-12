@@ -197,7 +197,7 @@ function calcSingularity(dt) {
 }
 function renderGrid() {
   $("#singularityGridWarp").style.display = (game.singularityPower.gte(1) ? "block" : "none");
-  if (game.singularityPower.gte(1)) {
+  if (game.singularityPower.gte(1) || game.t5resets.gte(1)) {
     $("#singularityGridOutInnerWarp").style.setProperty("--s", Math.min($("#singularityGridOutWarp").offsetWidth, $("#singularityGridOutWarp").offsetHeight) + 'px');
     $("#singularityGridOutInnerWarp").style.marginTop = Math.max(0, ($("#singularityGridOutWarp").offsetHeight-$("#singularityGridOutInnerWarp").offsetHeight)/2) + 'px';
     [...document.getElementsByClassName("singularityGridBlock")].forEach((ele, idx) => {ele.classList[singularityGridIdx[idx]>calcGridOpened()?"add":"remove"]("disabled")});
@@ -244,7 +244,7 @@ function getSingularityMachineHave(name) {
   }
   switch (name) {
     case "Incrementer":
-      return calcChallengeDone()+(game.metaUpgradeBought.includes(11) ? 12 : 2);
+      return calcChallengeDone()+(2 /*game.metaUpgradeBought.includes(11) ? 12 : 2*/);
     case "Output":
       return 1;
     case "Merger":
@@ -373,6 +373,7 @@ function calcSingularityPowerGain(calcNext=0, baseRes=game.quantumLab) {
   if (game.quantumUpgradeBought.includes('72')) tempSpGain4 = tempSpGain4.mul(D(10).mul(((new Date().getTime() - game.singularityTime)/1000)**0.6));
   if (game.quantumUpgradeBought.includes('73')) tempSpGain4 = tempSpGain4.mul(D(2).pow(D(game.quantumLab).pow(1/3)));
   if (game.quantumUpgradeBought.includes('76')) tempSpGain4 = tempSpGain4.mul(calcMultiProcess());
+  if (game.metaUpgradeBought.includes(11)) tempSpGain4 = tempSpGain4.mul(D(20).pow(game.metaEnergy));
 
   // return SP gain
   if (baseRes.lt(80)) return D(0);

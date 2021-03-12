@@ -162,6 +162,7 @@ function calcRPGain() {
   if (game.quantumUpgradeBought.includes('26')) tempNum = tempNum.mul(game.researchLevel.reduce((a, b) => a.mul(b**2+1), D(1)).pow(3));
   if (game.achievements.includes(9)) tempNum = tempNum.mul(D.max(D.max(game.researchPoint, 2).log(3).log(10),1));
   if (game.achievements.includes(26)) tempNum = tempNum.mul(10);
+  if (GameSlot.now == 1 && GameSlot.main.metaUpgradeBought.includes(5)) tempNum = tempNum.mul(GameSlot.main.metaRecord[0]);
   tempNum = tempNum.mul(singularityBoosts.RpBoost);
   tempData['RPGain'] = [tickDone, Decimal.max(tempNum, 0)]
   return Decimal.max(tempNum, 0);

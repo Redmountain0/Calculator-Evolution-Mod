@@ -139,6 +139,7 @@ function renderBasic() {
    ${dNotation(game.quantumLab, 4, 0)} Lab\n`;
   // I'm lazy (just copied that from quantum.js, will fix) :v
   if (game.t4toggle) tempRes += ` | ${dNotation(game.singularityPower, 4, 0)} SP\n`;
+  if (game.t5toggle) tempRes += ` | ${dNotation(game.metaMaterial, 4, 0)} MM , ${dNotation(game.metaEnergy, 4, 0)} ME\n`;
   $("#otherRes").innerHTML = tempRes;
   $("#memoryDigit").innerHTML = game.optionToggle[3] ? ("").padStart(Math.min(80, dNum(game.mDigits)-dNum(game.digits)), 0) : ""
   $("#numberBase").innerHTML = game.base;
@@ -214,9 +215,13 @@ function renderStat() {
   if (game.t2toggle) $("#statsText").innerHTML += `<br>You spent ${timeNotation((new Date().getTime()-game.rebootTime)/1000)} in this Reboot`;
   if (game.t3toggle) $("#statsText").innerHTML += `<br><br>You've done Quantum ${dNotation(game.t3resets, 4, 0)} times`;
   if (game.t3toggle) $("#statsText").innerHTML += `<br>You spent ${timeNotation((new Date().getTime()-game.quantumTime)/1000)} in this Quantum`;
-  if (game.t4toggle) $("#statsText").innerHTML += `<br>Your Quantum Lab record is ${dNotation(game.maxQuantumLab, 4, 0)}QL`;
+  if (game.t4toggle) $("#statsText").innerHTML += `<br>Your Quantum Lab record is ${dNotation(game.maxQuantumLab, 4, 0)} QL`;
   if (game.t4toggle) $("#statsText").innerHTML += `<br><br>You've done Singularity ${dNotation(game.t4resets, 4, 0)} times`;
   if (game.t4toggle) $("#statsText").innerHTML += `<br>You spent ${timeNotation((new Date().getTime()-game.singularityTime)/1000)} in this Singularity`;
+  if (game.t5toggle) $("#statsText").innerHTML += `<br><br>You've done Meta ${dNotation(game.t5resets, 4, 0)} times`;
+  if (game.t5toggle) $("#statsText").innerHTML += `<br>You spent ${timeNotation((new Date().getTime()-game.metaTime)/1000)} in this Meta`;
+  if (game.t5toggle) $("#statsText").innerHTML += `<br>Your Meta Material record is ${dNotation(game.metaRecord[0], 4, 0)} MM`;
+  if (game.t5toggle) $("#statsText").innerHTML += `<br>Your Meta Energy record is ${dNotation(game.metaRecord[1], 4, 0)} ME`;
 }
 function renderCalcDebugInfo() {
   $("#debugInfoArea").style.display = game.optionToggle[1] ? "block" : "none";
@@ -402,6 +407,7 @@ function calcCPU() {
     tempVar.mul(Base7Eff())
   }
   if (GameSlot.now == 1 && GameSlot.main.metaUpgradeBought.includes(0)) tempVar = tempVar.mul(256)
+  if (GameSlot.now == 1 && GameSlot.main.metaUpgradeBought.includes(4)) tempVar = tempVar.mul(D(3).pow(GameSlot.main.metaEnergy))
   if (game.achievements.includes(25)) tempVar = tempVar.mul(25);
   if (game.achievements.includes(41) && GameSlot.now == 1) tempVar = tempVar.mul(2);
   tempData['CPU'] = [tickDone, tempVar]
@@ -527,7 +533,7 @@ function calcProcessActive() {
 function calcMultiProcess() {
   var maxProcess = D(game.researchLevel[1]+1);
   maxProcess = maxProcess.add(D.floor(D.min(25, game.singularityPower.mul(4)).add(D.max(0, game.singularityPower.mul(4).sub(25)).pow(0.5))));
-  if (game.achievements.includes(7)) maxProcess.add(1);
+  if (game.achievements.includes(7)) maxProcess = maxProcess.add(1);
 
   return maxProcess;
 }

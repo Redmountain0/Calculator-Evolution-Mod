@@ -44,6 +44,7 @@ tempGame = {
   t4resetTime: 1e110,
   singularityTime: new Date().getTime(),
   singularityGrid: {},
+  singularityGridPreset: [{}, {}, {}],
   singularityGridActivate: 0,
   singularityPower: D(0),
   wormholeChallengeProgress: new Array(8).fill(0),
@@ -57,6 +58,7 @@ tempGame = {
   metaTime: new Date().getTime(),
   metaUpgradeBought: [],
   b: 0,
+  metaRecord: [D(0), D(0)]
 };
 game = {};
 tempGameSlot = {main: tempGame, simulation: tempGame, now: 0 /* 0: main; 1: simulation */, b: 2}
@@ -140,6 +142,10 @@ function load(c=1) {
   if (game.b == 1) {
 
   }
+
+  // meta Record fix
+  game.metaRecord[0] = D.max(game.metaMaterial, game.metaRecord[0]);
+  game.metaRecord[1] = D.max(game.metaEnergy, game.metaRecord[1]);
 
   // offline progress delete
   if (!game.optionToggle[2]) game.tLast = new Date().getTime();

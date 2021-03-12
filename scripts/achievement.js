@@ -8,8 +8,8 @@
     'Singularity<br>*', 'Second Singularity<br>*', 'Challenge', 'Bulk QL Challenge<br>*', 'More Challenges<br>*',
     'Mastered<br>*', 'Give me more QUBIT!<br>*', 'Grid Lab<br>*', 'Singularity at light speed<br>*', 'Singularit<br>ies<br>*',
     'New Machine<br>*', '1000 Labs<br>*', 'Overpowered<br>*', 'Grid Master', 'Simulation',
-    'Simulated Dollar<br>*', 'Mastered II', 'Meta', 'Simulated Meta', 'Boost goes brrrrr', 
-    'meta-Research', 'Second Meta', 'Challenger'
+    'Simulated Dollar<br>*', 'Mastered II', 'Meta', 'Simulated Meta', 'meta-Research',
+    'Second Meta', 'Mastered 2.5', 'Boost goes brrrrr',
   ];
   achievementGoal = [
     'Reach ${formatWithBase(63, game.base)}(${dNotation(game.base, 4, 0)})',
@@ -64,11 +64,11 @@
     'Buy all more Quantum Upgrades',
     'Have 1 Meta Material',
     'Have 1 Meta Energy',
-    'Complete Boost Challenge x10',
-
     'Reach 1 RP in Simulation',
+
     'Have 2 Meta Materials',
-    'Complete All Challenges'
+    'Buy all more Quantum Upgrades in RP challenge',
+    'Complete Boost Challenge x10',
   ];
   achievementGoalFunc = [
     'game.number.gte(63)', 'game.money.gte(1)', 'game.shopBought[5] >= 3', 'game.base.gte(10)', 'game.base.gte(36)',
@@ -80,7 +80,7 @@
     'game.quantumUpgradeBought.length>=36', 'game.quantumLab.gte(600)', 'game.wormholeChallengeProgress[6]>=1', 'game.t4resetTime <= 500', 'game.t4resets.gte(100)',
     'game.wormholeChallengeProgress[7]>=1', 'game.quantumLab.gte(1000)', 'game.singularityPower.gte(1e15)', 'calcGridOpened() == 25', 'calcMultiProcess().gte(1e15)',
     'D(GameSlot.simulation.money).gte(1)', 'game.quantumUpgradeBought.length>=49', 'game.metaMaterial.gte(1)', 'game.metaEnergy.gte(1)', 'game.wormholeChallengeProgress[7]>=10',
-    'D(GameSlot.simulation.researchPoint).gte(1)', 'game.metaMaterial.gte(2)', 'calcChallengeDone() == 80'
+    'D(GameSlot.simulation.researchPoint).gte(1)', 'game.metaMaterial.gte(2)', 'game.quantumUpgradeBought.length>=49 && game.challengeEntered == 3'
   ];
 })();
 

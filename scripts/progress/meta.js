@@ -1,25 +1,25 @@
 (function(){
     metaUpgradeDesc = [
-        'CPU Speed x256', 'Game Speed x16', '10 Extra RP<br>and reduce Reboot req', '\'Bonus CPU Level\' research\'s effect x2', 'Meta Energy Gain x2',
-        'Coming Soon!', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!',
-        '100 Extra Qubit', '10 Extra Incrementer', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!',
+        'CPU Speed x256', 'Game Speed x16', '10 Extra RP<br>and reduce Reboot req', '\'Bonus CPU Level\' research\'s effect x2', 'Boosts CPU based on unspent Meta Energy',
+        'Boost RP gain based on<br>record MM', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!',
+        '100 Extra Qubit', 'Boosts SP gain based on<br>unspent Meta Energy', 'You can bulk buy QL without Quantum VI', 'Keep Challenge progress<br>on Meta', 'Coming Soon!',
         'Coming Soon!', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!',
     ]
     metaUpgradeCost = [
-        '1 Meta Material', '1 Meta Energy', '2 Meta Energy', '3 Meta Energy', '3 Meta Materials',
-        'Infinity', 'Infinity', 'Infinity', 'Infinity', 'Infinity',
-        '1 Meta Energy', '3 Meta Energy', 'Infinity', 'Infinity', 'Infinity',
+        '1 Meta Material', '1 Meta Energy', '2 Meta Energy', '3 Meta Energy', '2 Meta Materials',
+        '3 Meta Materials', 'Infinity', 'Infinity', 'Infinity', 'Infinity',
+        '1 Meta Energy', '5 Meta Energy', '7 Meta Energy', '12 Meta Energy', 'Infinity',
         'Infinity', 'Infinity', 'Infinity', 'Infinity', 'Infinity',
     ]
 })();
 
 function renderMeta() {
-    $('#metaQuantity').innerHTML = calcMetaMaterialGain().valueOf() <= 1 ? 'a' : calcMetaMaterialGain()
-    $('#metaQuantity2').innerHTML = calcMetaEnergyGain().valueOf() <= 1 ? 'a' : calcMetaEnergyGain()
+    $('#metaQuantity').innerHTML = calcMetaMaterialGain().lte(1) ? 'a' : calcMetaMaterialGain()
+    $('#metaQuantity2').innerHTML = calcMetaEnergyGain().lte(1) ? 'a' : calcMetaEnergyGain()
     $("#metaCost").innerHTML = `Cost: ${dNotation(getMetaReq(), 0, 0)} SP`
-    $("#metaCost2").innerHTML = `Cost: ${formatWithBase(getMetaReq(1), GameSlot.simulation.base)} (${GameSlot.simulation.base})`
-    $("#metaButton").className = game.singularityPower.gte(getMetaReq()) ? "" : "disabled";
-    $("#metaButton2").className = D(GameSlot.simulation.number).gte(getMetaReq(1)) ? "" : "disabled";
+    $("#metaCost2").innerHTML = `Cost: ${skipString(formatWithBase(getMetaReq(1), GameSlot.simulation.base), 25)} (${GameSlot.simulation.base})`
+    $("#metaButton").className = calcMetaMaterialGain().gte(1) ? "" : "disabled";
+    $("#metaButton2").className = calcMetaEnergyGain().gte(1) ? "" : "disabled";
     $("#metaButton2").style.display = game.achievements.includes(42) ? "inline-block" : "none";
     $("#metaDesc").innerHTML = `You have ${dNotation(game.metaMaterial, 3, 0)} Meta materials and ${dNotation(game.metaEnergy, 3, 0)} Meta Energy`;
     $("#metaSimulationWarp").style.display = game.achievements.includes(39) ? "block" : "none";
@@ -31,6 +31,9 @@ function renderMeta() {
             $(`#metaUpgradeWarp > tbody > tr:nth-child(${index[Math.floor(i / 5)]}) > td:nth-child(${i % 5 + 1})`).classList.add('bought')
         }
     }
+}
+function skipString(str, length) {
+    return str.length > length ? `${str.slice(0, length)}...` : str
 }
 function buyMetaUpgrade(num) {
     if (game.metaUpgradeBought.includes(num)) return;
@@ -88,7 +91,8 @@ function simulationquit() {
     goTab(8)
 }
 function simulationmeta() {
-    game.metaEnergy = game.metaEnergy.add(calcMetaEnergyGain())
+    game.metaEnergy = game.metaEnergy.add(calcMetaEnergyGain());
+    game.metaRecord[1] = D.max(game.metaEnergy, game.metaRecord[1]);
     simulationreset()
 }
 function simulationreset() {
@@ -104,13 +108,14 @@ function meta() {
   
     game.t5resets = game.t5resets.add(1);
     game.metaMaterial = game.metaMaterial.add(calcMetaMaterialGain(game.singularityPower));
+    game.metaRecord[0] = D.max(game.metaMaterial, game.metaRecord[0]);
     metaReset();
 
     commandAppend(`make Meta material (${ordNum(game.t5resets)})`, (30+game.t5resets.toNumber()*3)%360, 1);
 }
 function getMetaReq(c=0) {
     if (c) {
-        return game.metaEnergy.pow(2).mul(2).add(5).pow(6).sub(1)
+        return game.metaEnergy.add(calcMetaEnergyGain()).sub(game.metaEnergy.add(D.max(0, calcMetaEnergyGain())).gte(10) ? 7 : 0).pow(2).mul(2).add(5).pow(game.metaEnergy.add(D.max(0, calcMetaEnergyGain())).gte(10) ? 12 : 6).sub(1)
     } else {
         return D(1e50).mul(D(10).pow(game.metaMaterial.mul(game.metaMaterial.add(2)).mul(5)))
     }
@@ -126,8 +131,17 @@ function calcMetaMaterialGain() {
     return labGain.floor(0);
 }
 function calcMetaEnergyGain() {
+    // Section 1: ~10 ME
     var MEGain = D(GameSlot.simulation.number).plus(1).pow(1/6).sub(5).round().div(2).sqrt().floor().add(1)
+
+    // Section 2: 10~30 ME
+    if (MEGain.gte(10)) {
+        MEGain = D(GameSlot.simulation.number).plus(1).pow(1/12).sub(5).round().div(2).sqrt().floor().add(8)
+    }
+    
+    // Section 0: NaN ME
     if (MEGain.isNaN()) MEGain = D(0);
+    if (MEGain.lt(0)) MEGAin = D(0);
 
     return MEGain.sub(game.metaEnergy)
 }

@@ -64,7 +64,9 @@ function metaReset(layer=4) {
   game.metaTime = new Date().getTime()
   game.singularityGrid = {}
   game.singularityGridActivate = 0
-  game.wormholeChallengeProgress = new Array(8).fill(0)
-  game.challengeRecord = new Array(8).fill(D(0))
+  if (!game.metaUpgradeBought.includes(13)) {
+    game.wormholeChallengeProgress = new Array(8).fill(0)
+    game.challengeRecord = new Array(8).fill(D(0))
+  }
   game.challengeEntered = -1
 }

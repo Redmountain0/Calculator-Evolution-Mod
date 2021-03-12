@@ -282,7 +282,7 @@ function calcQuantumResetClicks() {
 }
 
 function getMaxQuantumLabGain() {
-  return game.quantumUpgradeBought.includes('36') ? D(Infinity) : D(1);
+  return (game.quantumUpgradeBought.includes('36') || game.metaUpgradeBought.includes(12)) ? D(Infinity) : D(1);
 }
 function calcQuantum2Cap() {
   var baseCap = D(200);
