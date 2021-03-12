@@ -54,6 +54,11 @@ UpdateLog = [{
 &gt; Added Meta Stat<br>
 &gt; Added Meta Energy req slice (101010100100101 > 101010100...)<br>
 &gt; Fixed "Multi Process" achievement reward (It was not doing anything)<br>
+`,
+'1.2.1': `
+&gt; Added Favicon<br>
+&gt; Changed Meta upgrade 6 Formula (3^x > (x+2)^4)<br>
+&gt; Added some achievements
 `
 }]
 function Toggleupdatelog(num) {
