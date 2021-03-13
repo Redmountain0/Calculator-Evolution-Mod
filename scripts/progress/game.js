@@ -548,6 +548,7 @@ function isProcessExceed() {
 
 function bugFixer() {
   bugFixerNaN();
+  bugFixerNaN2();
 }
 function bugFixerNaN() {
   if (game.qubit.isNaN()) {
@@ -565,4 +566,7 @@ function bugFixerNaN() {
     game.researchProgress = new Array(9).fill(0);
     commandAppend("run Bug_Fixer.exe");
   }
+}
+function bugFixerNaN2() {
+  if (calcMultiProcess().isNaN() && game.t5resets.gte(1)) metaReset()
 }

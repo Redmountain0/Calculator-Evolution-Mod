@@ -138,13 +138,11 @@ function load(c=1) {
     dokeepMilestone();
     game.b++;
   }
-
+  
   if (game.b == 1) {
-    if (game.metaMaterial.gte(3)) metaReset()
     if (game.metaEnergy.gte(10)) simulationReset()
     game.metaEnergy = D.min(game.metaEnergy, 10)
     game.metaMaterial = D.min(game.metaMaterial, 3)
-    GameSlot.now = 0
     game.b++
   }
 

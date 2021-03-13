@@ -64,6 +64,9 @@ UpdateLog = [{
 &gt; Fixed ME minus bug<br>
 &gt; Changed ME formula<br>
 &gt; Added NaN autofix (It will do meta/simulation reset when you has more than 3 MM / 10 ME)
+`,
+'1.2.3': `
+&gt; Changed NaN autofix mechanism
 `
 }]
 function Toggleupdatelog(num) {
