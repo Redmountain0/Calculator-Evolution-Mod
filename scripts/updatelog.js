@@ -59,6 +59,11 @@ UpdateLog = [{
 &gt; Added Favicon<br>
 &gt; Changed Meta upgrade 6 Formula (3^x > (x+2)^4)<br>
 &gt; Added some achievements
+`,
+'1.2.2': `
+&gt; Fixed ME minus bug<br>
+&gt; Changed ME formula<br>
+&gt; Added NaN autofix (It will do meta/simulation reset when you has more than 3 MM / 10 ME)
 `
 }]
 function Toggleupdatelog(num) {

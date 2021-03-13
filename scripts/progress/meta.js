@@ -93,13 +93,7 @@ function simulationquit() {
 function simulationmeta() {
     game.metaEnergy = game.metaEnergy.add(calcMetaEnergyGain());
     game.metaRecord[1] = D.max(game.metaEnergy, game.metaRecord[1]);
-    simulationreset()
-}
-function simulationreset() {
-    for (const i in tempGame) {
-        GameSlot.simulation[i] = tempGame[i];
-    }
-    if (game.metaUpgradeBought.includes(2)) GameSlot.simulation.researchPoint = 10; GameSlot.simulation.t2toggle = 1;
+    simulationReset()
 }
 
 function meta() {
@@ -131,6 +125,7 @@ function calcMetaMaterialGain() {
     return labGain.floor(0);
 }
 function calcMetaEnergyGain() {
+    /*
     // Section 1: ~10 ME
     var MEGain = D(GameSlot.simulation.number).plus(1).pow(1/6).sub(5).round().div(2).sqrt().floor().add(1)
 
@@ -141,7 +136,10 @@ function calcMetaEnergyGain() {
     
     // Section 0: NaN ME
     if (MEGain.isNaN()) MEGain = D(0);
-    if (MEGain.lt(0)) MEGAin = D(0);
+    */
+    // New ME formula
+    var MEGain = D(GameSlot.simulation.number).log(12).mul(0.7).sub(2).floor()
+    if (MEGain.lt(0)) MEGain = D(0);
 
     return MEGain.sub(game.metaEnergy)
 }
