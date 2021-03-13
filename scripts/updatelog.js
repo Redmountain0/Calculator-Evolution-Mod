@@ -67,7 +67,10 @@ UpdateLog = [{
 `,
 '1.2.3': `
 &gt; Changed NaN autofix mechanism
-`
+`,
+'1.2.4': `
+&gt; Fixed Research bug
+`,
 }]
 function Toggleupdatelog(num) {
     $('#UpdateLogTable').style.opacity = num>0 ? 0.8 : 0;

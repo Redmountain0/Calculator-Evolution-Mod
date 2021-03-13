@@ -71,6 +71,7 @@ function metaReset(layer=4) {
   game.challengeEntered = -1
 }
 function simulationReset() {
+  GameSlot.now = 0
   for (const i in tempGame) {
       GameSlot.simulation[i] = tempGame[i];
   }

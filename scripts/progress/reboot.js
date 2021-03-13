@@ -197,7 +197,7 @@ function calcPerResearchSpeedBase() {
   if (Object.keys(tempData).includes('RSpeedBase') && tempData['RSpeedBase'][0] == tickDone) return tempData['RSpeedBase'][1]
   var base = calcPerResearchSpeedBaseBeforeMult();
   if (game.quantumUpgradeBought.includes('23')) base = base.mul(10);
-  if (game.quantumUpgradeBought.includes('27')) base = base.mul(game.singularityPower.div(10000).log(1000).add(3));
+  if (game.quantumUpgradeBought.includes('27') && game.singularityPower.gte(1)) base = base.mul(game.singularityPower.div(10000).log(1000).add(3));
   if (game.challengeEntered == 4 || game.challengeEntered == 7) base = base.div(20);
   tempData['RSpeedBase'] = [tickDone, base]
   return base;
