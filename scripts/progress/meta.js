@@ -1,13 +1,13 @@
 (function(){
     metaUpgradeDesc = [
         'CPU Speed x256', 'Game Speed x16', '10 Extra RP<br>and reduce Reboot req', '\'Bonus CPU Level\' research\'s effect x2', 'Boosts CPU based on unspent Meta Energy',
-        'Boost RP gain based on<br>record MM', '', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!',
+        'Boost RP gain based on<br>record MM', '25 Extra Qubit', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!',
         '100 Extra Qubit', 'Boosts SP gain based on<br>unspent Meta Energy', 'You can bulk buy QL without Quantum VI', 'Keep Challenge progress<br>on Meta', 'Coming Soon!',
         'Coming Soon!', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!',
     ]
     metaUpgradeCost = [
         '1 Meta Material', '1 Meta Energy', '2 Meta Energy', '3 Meta Energy', '2 Meta Materials',
-        '3 Meta Materials', 'Infinity', 'Infinity', 'Infinity', 'Infinity',
+        '3 Meta Materials', '18 Meta Energy', 'Infinity', 'Infinity', 'Infinity',
         '1 Meta Energy', '5 Meta Energy', '7 Meta Energy', '12 Meta Energy', 'Infinity',
         'Infinity', 'Infinity', 'Infinity', 'Infinity', 'Infinity',
     ]

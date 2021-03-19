@@ -170,6 +170,7 @@ function calcQuantum(dt=0) {
   // Calc Bonus Qubit
   QubitAmount = QubitAmount.add(calcChallengeDone());
   if (game.metaUpgradeBought.includes(10)) QubitAmount = QubitAmount.add(100)
+  if (GameSlot.now == 1 && GameSlot.main.metaUpgradeBought.includes(6)) QubitAmount = QubitAmount.add(25)
   game.qubit = QubitAmount
   calcQuantumAuto();
 }

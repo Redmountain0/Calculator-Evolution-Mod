@@ -76,6 +76,9 @@ UpdateLog = [{
 &gt; Changed ME formula again<br>
 &gt; Adjust abnormal MM/ME amount (sorry for undoing save)
 `,
+'1.2.6': `
+&gt; Added 1 Meta upgrade
+`
 }]
 function Toggleupdatelog(num) {
     $('#UpdateLogTable').style.opacity = num>0 ? 0.8 : 0;
