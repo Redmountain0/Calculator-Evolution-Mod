@@ -1,7 +1,7 @@
 (function(){
     metaUpgradeDesc = [
         'CPU Speed x256', 'Game Speed x16', '10 Extra RP<br>and reduce Reboot req', '\'Bonus CPU Level\' research\'s effect x2', 'Boosts CPU based on unspent Meta Energy',
-        'Boost RP gain based on<br>record MM', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!',
+        'Boost RP gain based on<br>record MM', '', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!',
         '100 Extra Qubit', 'Boosts SP gain based on<br>unspent Meta Energy', 'You can bulk buy QL without Quantum VI', 'Keep Challenge progress<br>on Meta', 'Coming Soon!',
         'Coming Soon!', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!', 'Coming Soon!',
     ]
@@ -109,7 +109,7 @@ function meta() {
 }
 function getMetaReq(c=0) {
     if (c) {
-        return game.metaEnergy.add(calcMetaEnergyGain()).sub(game.metaEnergy.add(D.max(0, calcMetaEnergyGain())).gte(10) ? 7 : 0).pow(2).mul(2).add(5).pow(game.metaEnergy.add(D.max(0, calcMetaEnergyGain())).gte(10) ? 12 : 6).sub(1)
+        return game.metaEnergy.add(2).sub(game.metaEnergy.add(D.max(0, calcMetaEnergyGain())).gte(10) ? 7 : 0).pow(2).mul(2).add(5).pow(game.metaEnergy.add(D.max(0, calcMetaEnergyGain())).gte(10) ? 12 : 6).sub(1)
     } else {
         return D(1e50).mul(D(10).pow(game.metaMaterial.mul(game.metaMaterial.add(2)).mul(5)))
     }
@@ -122,7 +122,7 @@ function calcMetaMaterialGain() {
     
     var labGain = D.floor(fromSPGain);
     tempData['MMGain'] = [tickDone, labGain.floor(0)]
-    return labGain.floor(0);
+    return labGain.floor(0).sub(game.metaMaterial);
 }
 function calcMetaEnergyGain() {
     /*
@@ -138,7 +138,7 @@ function calcMetaEnergyGain() {
     if (MEGain.isNaN()) MEGain = D(0);
     */
     // New ME formula
-    var MEGain = D(GameSlot.simulation.number).log(12).mul(0.7).sub(2).floor()
+    var MEGain = D(GameSlot.simulation.number).log(10).log(1.02).pow(2).div(2000).sub(1.5).floor()
     if (MEGain.lt(0)) MEGain = D(0);
 
     return MEGain.sub(game.metaEnergy)

@@ -70,6 +70,11 @@ UpdateLog = [{
 `,
 '1.2.4': `
 &gt; Fixed Research bug
+`
+}, {
+'1.2.5': `
+&gt; Changed ME formula again<br>
+&gt; Adjust abnormal MM/ME amount (sorry for undoing save)
 `,
 }]
 function Toggleupdatelog(num) {

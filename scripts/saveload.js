@@ -63,6 +63,13 @@ tempGame = {
 game = {};
 tempGameSlot = {main: tempGame, simulation: tempGame, now: 0 /* 0: main; 1: simulation */, b: 2}
 GameSlot = tempGameSlot
+function simulationReset() {
+  GameSlot.now = 0
+  for (const i in tempGame) {
+      GameSlot.simulation[i] = tempGame[i];
+  }
+  if (game.metaUpgradeBought.includes(2)) GameSlot.simulation.researchPoint = 10; GameSlot.simulation.t2toggle = 1;
+}
 //            vvv    commandAppear=1
 function save(c=1) {
   if ((new Date().getTime())-game.lastRestoreSaved >= 1000*3600) {
@@ -139,10 +146,17 @@ function load(c=1) {
     game.b++;
   }
   
+  // balance fix
   if (game.b == 1) {
     if (game.metaEnergy.gte(10)) simulationReset()
     game.metaEnergy = D.min(game.metaEnergy, 10)
     game.metaMaterial = D.min(game.metaMaterial, 3)
+    game.b++
+  }
+  if (game.b == 2) {
+    if (game.metaEnergy.gte(15)) simulationReset()
+    game.metaEnergy = D.min(game.metaEnergy, 15)
+    game.metaMaterial = D.min(game.metaMaterial, 5)
     game.b++
   }
 
